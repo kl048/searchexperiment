@@ -17,11 +17,11 @@ class C(BaseConstants):
     ]
     TREATMENT_QUESTIONS = {
         'T': [
-            'Question for treatment T only',
-            'Question for both T and C treatments'
+            'You will have the same partner throughout the the study who you can chat with.',
+            'You will not share your earnings with your partner'
         ],
         'C': [
-            'Question for both T and C treatments'
+            'You will have the same partner throughout the the study who you can chat with.'
         ]
     }
 
@@ -80,8 +80,8 @@ class Comprehension(Page):
             quiz_2=(False, 'There is a 50% chance that a wage offer will be made in any period.'),
             quiz_3=(True, 'Only one of the 20 search episodes will be used to determine your payment.'),
             quiz_4=(False, 'Your wage will equal to the wage offer as long as that wage offer is at least as large as the lowest wage offer you stated.'),
-            treatment_quiz_1=(False, 'Feedback for treatment-specific question 1.'),
-            treatment_quiz_2=(False, 'Feedback for treatment-specific question 2.'),
+            treatment_quiz_1=(True, 'You will have the same partner throughout the the study who you can chat with.'),
+            treatment_quiz_2=(False, 'You will equally share your earnings with your partner.'),
         )
 
         error_msgs = {

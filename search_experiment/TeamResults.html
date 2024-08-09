@@ -1,6 +1,12 @@
+{% extends 'global/Page.html' %}
+{% load otree %}
 
-{% extends "global/Page.html" %}
+{% block title %}
+    Team Results
+{% endblock %}
+
 {% block content %}
-<h3>Team Results</h3>
-<p>Your team earnings are: {{ team_earnings }} ECUs</p>
+    <h3>Search Episode {{ search_episode_number }} - Period {{ period_number }}</h3>
+    <p>Team earnings: {{ team_earnings }}</p>
+    {% next_button %}
 {% endblock %}

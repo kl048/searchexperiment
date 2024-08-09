@@ -2,28 +2,13 @@
 {% load otree %}
 
 {% block title %}
-    Results - Round {{ player.round_number }}
+    Results
 {% endblock %}
 
 {% block content %}
-    <table class="table mb-5">
-        <tr>
-            <th>Your reservation wage</th>
-            <td>{{ reservation_wage }} {{ C.ECU_LABEL }}</td>
-        </tr>
-        <tr>
-            <th>Your wage offer</th>
-            <td>{{ wage_offer }} {{ C.ECU_LABEL }}</td>
-        </tr>
-        <tr>
-            <th>Was the offer accepted?</th>
-            <td>{% if accepted %} Yes {% else %} No {% endif %}</td>
-        </tr>
-        <tr>
-            <th>Your earnings</th>
-            <td>{{ earnings }}</td>
-        </tr>
-    </table>
-
+    <h3>Search Episode {{ search_episode_number }} - Period {{ period_number }}</h3>
+    <p>Your reservation wage: {{ reservation_wage }}</p>
+    <p>Offer accepted: {{ accepted }}</p>
+    <p>Your earnings: {{ earnings }}</p>
     {% next_button %}
 {% endblock %}

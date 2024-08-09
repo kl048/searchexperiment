@@ -6,17 +6,8 @@
 {% endblock %}
 
 {% block content %}
-    <h3>
-        The task is over. Please click the next button to take the survey.
-    </h3>
-
-    <p>
-        Your total payoff from today's experiment (including {{ show_up_fee }} show-up fee) is {{ total_earnings_with_crt }}.
-    </p>
-
-    <p>
-       You can collect the cash after finishing the survey.
-    </p>
-
-    {{ next_button }}
+    <h3>The task is over. Please click the next button to take the survey.</h3>
+    <p>Your total payoff from today's experiment (including {{ show_up_fee }} show-up fee) is ${{ total_payoff_in_dollars }}.</p>
+    <p>You can collect the cash after finishing the survey.</p>
+    {% next_button %}
 {% endblock %}

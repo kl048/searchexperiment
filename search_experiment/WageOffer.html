@@ -6,10 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <form>
-        <p>Wage offer: {{ wage_offer }} {{ C.ECU_LABEL }}</p>
-        {{ formfields }}
-    </form>
-
+    <h3>Search Episode {{ search_episode_number }} - Period {{ period_number }}</h3>
+    <p>Your wage offer: {{ wage_offer }}</p>
     {% next_button %}
 {% endblock %}
