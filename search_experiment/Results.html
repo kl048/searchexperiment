@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Search Episode {{ search_episode_number }} - Period {{ period_number }}</h3>
-    <p>Your reservation wage: {{ reservation_wage }}</p>
-    <p>Offer accepted: {{ accepted }}</p>
-    <p>Your earnings: {{ earnings }}</p>
+    <h3>Search Episode {{ player.current_episode }} - Period {{ player.period_in_episode }}</h3>
+    <p>Your reservation wage: {{ player.reservation_wage }}</p>
+    <p>Offer accepted: {{ player.accepted }}</p>
+    <p>Your earnings: {{ player.earnings }}</p>
     {% next_button %}
 {% endblock %}
