@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Search Episode {{ search_episode_number }} - Period {{ period_number }}</h3>
-    <p>Your wage offer: {{ wage_offer }}</p>
+    <h3>Search Episode {{ player.current_episode }} - Period {{ player.period_in_episode }}</h3>
+    <p>Wage offer: {{ wage_offer }} </p>
     {% next_button %}
 {% endblock %}
