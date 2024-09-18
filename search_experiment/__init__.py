@@ -1,4 +1,3 @@
-
 import random
 from otree.api import *
 
@@ -188,18 +187,16 @@ def end_period(player: Player):
         player.current_episode += 1
         player.period_in_episode = 1  # Reset period for the new episode
         print(f"Accepted wage, moving to new Episode: {player.current_episode}, Reset Period: {player.period_in_episode}")
-        print("write test")
     else:
         # Increment period within the same episode
         player.period_in_episode += 1
 
         # If period exceeds the limit for the current episode, move to the next episode
-        if player.period_in_episode > player.subsession.round_in_block:
+    if player.period_in_episode > player.subsession.round_in_block:
             player.current_episode += 1
-            print("test")
             player.period_in_episode = 1  # Reset period for the new episode
             print(f"New Episode: {player.current_episode}, Reset Period: {player.period_in_episode}")
-        else:
+    else:
             print(f"Incremented Period: {player.period_in_episode} in Episode: {player.current_episode}")
 
 
