@@ -27,7 +27,7 @@ SESSION_CONFIGS = [
         name='search_experiment_team',
         display_name="Search Experiment (Team)",
         num_demo_participants=2,
-        app_sequence=['comprehension', 'search_experiment', 'survey'],
+        app_sequence=['comprehension', 'search_experiment', 'crt', 'survey'],
         treatment='T',
         players_per_group=2
     ),
