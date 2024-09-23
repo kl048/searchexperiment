@@ -13,9 +13,10 @@ Basic Job Search
 Three Treatments: Individual, Chat, Team
 """
 
+
 class C(BaseConstants):
     NAME_IN_URL = 'search_experiment'
-    PLAYERS_PER_GROUP = None  # Dynamic definition
+    PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 20  # Define the number of episodes as rounds
     ENDOWMENT = cu(20)
     ALPHA = 0.5
@@ -27,15 +28,16 @@ class C(BaseConstants):
     ECU_LABEL = 'ECUs'
     PAYMENT_PER_CORRECT_ANSWER = 0.50
 
+
 class Subsession(BaseSubsession):
-    block = models.IntegerField()  # Represents the episode
-    round_in_block = models.IntegerField()  # Represents the period within the episode
+    block = models.IntegerField()
+    round_in_block = models.IntegerField()
+
 
 def creating_session(subsession: Subsession):
     subsessions = subsession.in_all_rounds()
     for subsession in subsessions:
         current_round = subsession.round_number
-        # Determine the block (episode) and round_in_block (period within the episode)
         if current_round <= 5:
             subsession.block = 1
             subsession.round_in_block = current_round
@@ -105,8 +107,10 @@ def creating_session(subsession: Subsession):
         player.is_employed = False
         player.round_payoff = 0
 
+
 class Group(BaseGroup):
     pass
+
 
 class Player(BasePlayer):
     treatment = models.StringField()
@@ -114,11 +118,11 @@ class Player(BasePlayer):
         min=0,
         max=C.THETA,
         label="Set your reservation wage",
-        initial=0  # Ensure reservation_wage is always initialized
+        initial=0
     )
     wage_offer = models.IntegerField(blank=True)
     accepted = models.BooleanField(initial=False)
-    earnings = models.CurrencyField(initial=0)  # Ensure earnings is initialized
+    earnings = models.CurrencyField(initial=0)
     is_employed = models.BooleanField(initial=False)
     round_payoff = models.CurrencyField(initial=0)
     total_earnings = models.CurrencyField(initial=0)
@@ -130,13 +134,15 @@ class Player(BasePlayer):
     current_episode = models.IntegerField()
     period_in_episode = models.IntegerField()
 
+
 def set_wage_offer(player: Player):
-    if random.random() < C.ALPHA:
-        player.wage_offer = random.randint(1, C.THETA)
+    if random.random() < C.ALPHA:  # 50% chance to make a wage offer
+        player.wage_offer = random.randint(1, C.THETA)  # Draw wage from U[1,100]
         print(f"Wage offer in period {player.period_in_episode}: {player.wage_offer}")
     else:
-        player.wage_offer = None
+        player.wage_offer = None  # No offer
         print(f"No wage offer in period {player.period_in_episode}")
+
 
 def set_earnings(player: Player):
     if player.field_maybe_none('wage_offer') is not None and player.wage_offer >= player.reservation_wage:
@@ -145,16 +151,21 @@ def set_earnings(player: Player):
         player.earnings = player.wage_offer
     else:
         player.accepted = False
-        player.earnings = 0  # Set to 0 if the wage offer is None or below the reservation wage
-    player.round_payoff = player.earnings + C.ENDOWMENT
+        if player.period_in_episode == player.subsession.round_in_block:
+            # Only set earnings to 20 ECUs at the end of the episode
+            player.earnings = C.ENDOWMENT
+        else:
+            player.earnings = 0  # Earnings remain 0 until the last period
 
 def get_chat_duration(player: Player):
     return C.CHAT_DURATION_LONG if player.round_number < 5 else C.CHAT_DURATION_SHORT
+
 
 def set_total_earnings(player: Player):
     selected_round = random.randint(1, C.NUM_ROUNDS)
     selected_round_payoff = player.in_round(selected_round).round_payoff
     player.total_earnings = selected_round_payoff * C.EXCHANGE_RATE + C.SHOW_UP_FEE
+
 
 def calculate_crt_earnings(player: Player, values):
     solutions = {
@@ -179,25 +190,27 @@ def calculate_crt_earnings(player: Player, values):
     total_earnings = player.participant.vars.get('total_earnings', 0)
     player.total_earnings_with_crt = player.payment_for_correct_answers + total_earnings
 
+
 def end_period(player: Player):
     print(f"Before End Period: Episode {player.current_episode}, Period {player.period_in_episode}, Employed: {player.is_employed}")
 
     if player.accepted:
-        # If the wage is accepted, directly move to the next episode
+        # If the wage is accepted, the episode ends immediately, and we move to the next episode
         player.current_episode += 1
         player.period_in_episode = 1  # Reset period for the new episode
         print(f"Accepted wage, moving to new Episode: {player.current_episode}, Reset Period: {player.period_in_episode}")
     else:
-        # Increment period within the same episode
-        player.period_in_episode += 1
-
-        # If period exceeds the limit for the current episode, move to the next episode
-    if player.period_in_episode > player.subsession.round_in_block:
+        # Increment period only if the wage was not accepted
+        if player.period_in_episode < player.subsession.round_in_block:
+            player.period_in_episode += 1
+        else:
+            player.earnings = C.ENDOWMENT  # Outside option if no wage accepted by the last period
             player.current_episode += 1
             player.period_in_episode = 1  # Reset period for the new episode
             print(f"New Episode: {player.current_episode}, Reset Period: {player.period_in_episode}")
-    else:
-            print(f"Incremented Period: {player.period_in_episode} in Episode: {player.current_episode}")
+
+    print(f"End of Period: Episode {player.current_episode}, Period {player.period_in_episode}")
+
 
 
 # Pages
@@ -247,17 +260,30 @@ class WageOffer(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
+        if player.period_in_episode > 1:
+            player.reservation_wage = player.participant.vars.get(f'reservation_wage_episode_{player.current_episode}',
+                                                                  player.reservation_wage)
         set_earnings(player)
-        end_period(player)
-        set_wage_offer(player)
+
+        if player.accepted:  # If wage is accepted, we move to the next episode
+            player.current_episode += 1
+            player.period_in_episode = 1  # Reset for the new episode
+        else:
+            set_wage_offer(player)  # If wage not accepted, proceed to next period
+
 
 
 class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        reservation_wage = player.participant.vars.get(f'reservation_wage_episode_{player.current_episode}',
-                                                       player.reservation_wage)
+        # Use current values before incrementing to show correct episode and period
+        reservation_wage = player.participant.vars.get(f'reservation_wage_episode_{player.current_episode}', player.reservation_wage)
         wage_offer = player.field_maybe_none('wage_offer') or 'No offer'
+
+        # Only show earnings if wage was accepted or the episode has ended
+        earnings = None
+        if player.accepted or player.period_in_episode == player.subsession.round_in_block:
+            earnings = player.earnings
 
         return {
             'search_episode_number': player.current_episode,
@@ -265,12 +291,20 @@ class Results(Page):
             'reservation_wage': reservation_wage,
             'wage_offer': wage_offer,
             'accepted': player.accepted,
-            'earnings': player.earnings,
+            'earnings': earnings,  # Only show earnings if appropriate
         }
 
     @staticmethod
-    def is_displayed(player: Player):
-        return True
+    def before_next_page(player: Player, timeout_happened=False):
+        # Move to the next episode if wage was accepted or if the episode has ended
+        if player.accepted or player.period_in_episode == player.subsession.round_in_block:
+            player.current_episode += 1
+            player.period_in_episode = 1  # Reset for new episode
+        else:
+            player.period_in_episode += 1  # Move to the next period only if no wage was accepted
+
+
+
 
 class TeamResults(Page):
     @staticmethod
@@ -286,6 +320,7 @@ class TeamResults(Page):
     def is_displayed(player: Player):
         return player.treatment == 'T'
 
+
 class CRTQuestions(Page):
     form_model = 'player'
     form_fields = ['quiz1', 'quiz2', 'quiz3', 'quiz4', 'quiz5', 'quiz6', 'quiz7']
@@ -297,6 +332,7 @@ class CRTQuestions(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         calculate_crt_earnings(player, player.__dict__)
+
 
 class FinalEarnings(Page):
     @staticmethod
@@ -315,9 +351,10 @@ class FinalEarnings(Page):
             'conversion_rate': C.EXCHANGE_RATE,
         }
 
+
 page_sequence = [
     SetReservationWage,
-    WaitForAllPlayers,  # Ensure all players wait here to synchronize for Chat and Team treatments
+    WaitForAllPlayers,
     WageOffer,
     Results,
     TeamResults,
