@@ -17,7 +17,7 @@ Three Treatments: Individual, Chat, Team
 class C(BaseConstants):
     NAME_IN_URL = 'search_experiment'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 20  # Define the number of episodes as rounds
+    NUM_ROUNDS = 93  # Define the number of episodes as rounds
     ENDOWMENT = cu(20)
     ALPHA = 0.5
     THETA = 100
@@ -157,6 +157,7 @@ def set_earnings(player: Player):
         else:
             player.earnings = 0  # Earnings remain 0 until the last period
 
+
 def get_chat_duration(player: Player):
     return C.CHAT_DURATION_LONG if player.round_number < 5 else C.CHAT_DURATION_SHORT
 
@@ -212,7 +213,6 @@ def end_period(player: Player):
     print(f"End of Period: Episode {player.current_episode}, Period {player.period_in_episode}")
 
 
-
 # Pages
 class SetReservationWage(Page):
     form_model = 'player'
@@ -225,7 +225,6 @@ class SetReservationWage(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
         player.participant.vars[f'reservation_wage_episode_{player.current_episode}'] = player.reservation_wage
-        set_wage_offer(player)
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -249,12 +248,12 @@ class WageOffer(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        wage_offer = player.field_maybe_none('wage_offer') or 'No offer'
+        set_wage_offer(player)
 
         return {
             'search_episode_number': player.current_episode,
             'period_number': player.period_in_episode,
-            'wage_offer': wage_offer,
+            'wage_offer': player.field_maybe_none('wage_offer'),
             'accepted': player.accepted,
         }
 
@@ -264,46 +263,33 @@ class WageOffer(Page):
             player.reservation_wage = player.participant.vars.get(f'reservation_wage_episode_{player.current_episode}',
                                                                   player.reservation_wage)
         set_earnings(player)
-
-        if player.accepted:  # If wage is accepted, we move to the next episode
-            player.current_episode += 1
-            player.period_in_episode = 1  # Reset for the new episode
-        else:
-            set_wage_offer(player)  # If wage not accepted, proceed to next period
-
+        # Now we call the end_period function to handle the episode/period transition.
+        end_period(player)
 
 
 class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        # Use current values before incrementing to show correct episode and period
+        # Correct the episode and period logic
         reservation_wage = player.participant.vars.get(f'reservation_wage_episode_{player.current_episode}', player.reservation_wage)
         wage_offer = player.field_maybe_none('wage_offer') or 'No offer'
 
-        # Only show earnings if wage was accepted or the episode has ended
-        earnings = None
-        if player.accepted or player.period_in_episode == player.subsession.round_in_block:
-            earnings = player.earnings
+        # Earnings should not be updated until the round is finished
+        earnings = player.earnings if player.accepted or player.period_in_episode == player.subsession.round_in_block else None
 
         return {
-            'search_episode_number': player.current_episode,
+            'search_episode_number': player.current_episode,  # Correct the display of the current episode
             'period_number': player.period_in_episode,
             'reservation_wage': reservation_wage,
             'wage_offer': wage_offer,
             'accepted': player.accepted,
-            'earnings': earnings,  # Only show earnings if appropriate
+            'earnings': earnings,
         }
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
-        # Move to the next episode if wage was accepted or if the episode has ended
-        if player.accepted or player.period_in_episode == player.subsession.round_in_block:
-            player.current_episode += 1
-            player.period_in_episode = 1  # Reset for new episode
-        else:
-            player.period_in_episode += 1  # Move to the next period only if no wage was accepted
-
-
+        # Call end_period to ensure the correct transition
+        end_period(player)
 
 
 class TeamResults(Page):
