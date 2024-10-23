@@ -3,14 +3,13 @@
 {% load otree %}
 
 {% block title %}
-    Results
+    Wage Offer
 {% endblock %}
 
 {% block content %}
-    <h3>Search Episode {{ player.current_episode }}</h3>
-    <p>Your reservation wage: {{ player.reservation_wage }}</p>
+    <h3>Search Episode {{ player.current_episode }} - Period {{ player.period_in_episode }}</h3>
+    <p>Wage offer: {{ wage_offer }} </p>
     <p>Offer accepted: {{ player.accepted }}</p>
-    <p>Your earnings: {{ player.earnings }}</p>
     {% next_button %}
 {% endblock %}
 

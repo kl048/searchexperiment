@@ -8,10 +8,18 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     dict(
+        name='individual',
+        display_name="Individual",
+        num_demo_participants=1,
+        app_sequence=[ 'Individual', 'survey'],
+        treatment='I',
+        players_per_group=1
+    ),
+    dict(
         name='search_experiment_individual',
         display_name="Search Experiment (Individual)",
         num_demo_participants=1,
-        app_sequence=['comprehension', 'search_experiment', 'survey'],
+        app_sequence=[ 'search_experiment', 'survey'],
         treatment='I',
         players_per_group=1
     ),

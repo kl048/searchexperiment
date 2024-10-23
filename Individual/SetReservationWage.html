@@ -1,0 +1,15 @@
+{% extends 'global/Page.html' %}
+{% load otree %}
+
+{% block title %}
+    Set Reservation Wage
+{% endblock %}
+
+{% block content %}
+    <h3>Search Episode {{ search_episode_number }}</h3>
+    <form>
+        {{ formfields }}
+    </form>
+
+    {% next_button %}
+{% endblock %}

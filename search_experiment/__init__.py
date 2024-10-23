@@ -17,7 +17,7 @@ Three Treatments: Individual, Chat, Team
 class C(BaseConstants):
     NAME_IN_URL = 'search_experiment'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 20  # Define the number of episodes as rounds
+    NUM_ROUNDS = 400  # Define the number of episodes as rounds
     ENDOWMENT = cu(20)
     ALPHA = 0.5
     THETA = 100
@@ -27,6 +27,7 @@ class C(BaseConstants):
     SHOW_UP_FEE = 7
     ECU_LABEL = 'ECUs'
     PAYMENT_PER_CORRECT_ANSWER = 0.50
+    period_number={1:5,2:7,3:5}
 
 
 class Subsession(BaseSubsession):
