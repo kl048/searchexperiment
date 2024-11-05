@@ -28,21 +28,23 @@ class Player(BasePlayer):
     wage_offer = models.IntegerField(blank=True)
     accepted = models.BooleanField(initial=False)
     earnings = models.CurrencyField(initial=0)
-    current_episode = models.IntegerField(initial=1)
-    period_in_episode = models.IntegerField(initial=1)
+    current_episode = models.IntegerField()
+    period_in_episode = models.IntegerField()
     max_period_in_episode = models.IntegerField()
+    check = models.IntegerField()
     nickname = models.StringField()
     chat_duration = models.IntegerField()
 
 # Functions
 def creating_session(subsession: Subsession):
     for player in subsession.get_players():
-        player.participant.vars["New_episode"] = True
-        player.current_episode = 1
-        player.nickname = f"Player {player.id_in_group}"
+        if "New_episode" not in player.participant.vars:
+            player.participant.vars["New_episode"] = True
+            player.current_episode = 1
+            player.nickname = f"Player {player.id_in_group}"
 
 def set_Max_period(player: Player):
-    player.max_period_in_episode = C.PERIODS.get(player.current_episode, 5)
+    player.max_period_in_episode = C.PERIODS[player.current_episode]
 
 def set_wage_offer(player: Player):
     if random.random() < C.ALPHA:
@@ -94,10 +96,12 @@ class SetReservationWage(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.participant.vars.get("New_episode") == False
+        return player.participant.vars.get("New_episode") == True
 
     @staticmethod
     def vars_for_template(player: Player):
+        if player.round_number > 1:
+            player.current_episode = player.in_round(player.round_number - 1).current_episode + 1
         return {
             'search_episode_number': player.current_episode,
             'endowment': C.ENDOWMENT,
@@ -107,7 +111,7 @@ class SetReservationWage(Page):
     def before_next_page(player: Player, timeout_happened=False):
         player.participant.vars["Reservation"] = player.reservation_wage
         player.period_in_episode = 1
-        set_Max_period(player)
+
 
 class Searching(Page):
     @staticmethod
@@ -132,10 +136,6 @@ class Searching(Page):
             'accepted': player.accepted,
         }
 
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened=False):
-        if not player.accepted and player.period_in_episode < player.max_period_in_episode:
-            player.period_in_episode += 1
 
 class Results(Page):
     @staticmethod
@@ -151,10 +151,9 @@ class Results(Page):
         }
 
     @staticmethod
-    def before_next_page(player: Player, timeout_happened=False):
-        player.participant.vars["New_episode"] = True
-        if player.accepted or player.period_in_episode == player.max_period_in_episode:
-            player.period_in_episode = 1
+    def app_after_this_page(player: Player, upcoming_apps):
+        if player.current_episode == C.MAX_EPISODE:
+            return upcoming_apps[0]
 
 # Page Sequence
 page_sequence = [WaitForChat, Chat, SetReservationWage, Searching, Results]
