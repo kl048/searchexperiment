@@ -11,7 +11,7 @@ SESSION_CONFIGS = [
         name='search_experiment_individual',
         display_name="Search Experiment (Individual)",
         num_demo_participants=1,
-        app_sequence=['comprehension', 'search_experiment', 'survey'],
+        app_sequence=['comprehension_i', 'individual', 'crt', 'survey'],
         treatment='I',
         players_per_group=1
     ),
@@ -19,7 +19,7 @@ SESSION_CONFIGS = [
         name='search_experiment_chat',
         display_name="Search Experiment (Chat)",
         num_demo_participants=2,
-        app_sequence=['comprehension', 'search_experiment', 'survey'],
+        app_sequence=['comprehension_c', 'chat', 'crt', 'survey'],
         treatment='C',
         players_per_group=2
     ),
@@ -27,7 +27,7 @@ SESSION_CONFIGS = [
         name='search_experiment_team',
         display_name="Search Experiment (Team)",
         num_demo_participants=2,
-        app_sequence=['comprehension', 'search_experiment', 'crt', 'survey'],
+        app_sequence=['comprehension_t', 'team', 'crt', 'survey'],
         treatment='T',
         players_per_group=2
     ),

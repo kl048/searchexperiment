@@ -1,0 +1,16 @@
+
+{% extends 'global/Page.html' %}
+{% load otree %}
+
+{% block title %}
+    Wage Offer
+{% endblock %}
+
+{% block content %}
+    <h3>Search Episode {{ player.current_episode }} - Period {{ player.period_in_episode }}</h3>
+    <p>Wage offer: {{ wage_offer }} </p>
+    <p>Offer accepted: {{ player.accepted }}</p>
+    {% next_button %}
+{% endblock %}
+
+

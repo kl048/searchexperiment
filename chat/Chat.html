@@ -1,0 +1,19 @@
+{% extends "global/Page.html" %}
+{% block title %}Chat with Partner{% endblock %}
+
+{% block content %}
+    <h3>Episode {{ search_episode_number }} - Chat with Your Partner</h3>
+    <p>Chat Duration: {{ chat_duration }} seconds</p>
+    {{ chat nickname=player.nickname }}
+{{next_button}}
+{% endblock %}
+
+
+
+{% block scripts %}
+    <script>
+        setTimeout(function() {
+            document.querySelector('.otree-btn-next').click();
+        }, {{ chat_duration }} * 1000);
+    </script>
+{% endblock %}

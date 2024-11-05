@@ -1,0 +1,11 @@
+{% extends "global/Page.html" %}
+{% block title %}Set Reservation Wage{% endblock %}
+
+{% block content %}
+<h3>Episode {{ search_episode_number }} - Set Your Reservation Wage</h3>
+<p>Endowment: {{ endowment }} ECUs</p>
+<form method="post">
+    {{ formfields }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

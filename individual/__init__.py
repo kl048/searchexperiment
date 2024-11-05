@@ -9,12 +9,12 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'Treament_Indivudal'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 99
+    NUM_ROUNDS = 95
     ENDOWMENT = 20
     ALPHA = 0.5
     THETA = 100
     PERIODS = {1: 5, 2: 7, 3: 5, 4:4, 5:6, 6:3, 7:5, 8:4, 9:6, 10:2, 11:4, 12:3, 13:6, 14:7, 15:4, 16:5, 17:3, 18:8, 19:6, 20:6}
-    MAX_EPISODE = 3
+    MAX_EPISODE = 20
 
 
 class Subsession(BaseSubsession):
@@ -27,7 +27,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     reservation_wage = models.IntegerField(
-        min=0,
+        min=1,
         max=C.THETA,
         label="Set your reservation wage",
         initial=0
@@ -40,17 +40,17 @@ class Player(BasePlayer):
     max_period_in_episode = models.IntegerField()
     check = models.IntegerField()
 
-
-# function:
-def creating_session(subsession: Subsession):
+#function:
+def creating_session(subsession:Subsession):
     for player in subsession.get_players():
         if "New_episode" not in player.participant.vars:
             player.participant.vars["New_episode"] = True
             player.current_episode = 1
 
-
+            
 def set_Max_period(player: Player):
     player.max_period_in_episode = C.PERIODS[player.current_episode]
+
 
 
 def set_wage_offer(player: Player):
@@ -58,7 +58,6 @@ def set_wage_offer(player: Player):
         player.wage_offer = random.randint(1, C.THETA)  # Draw wage from U[1,100]
     else:
         player.wage_offer = None  # No offer
-
 
 def set_earnings(player: Player):
     if player.field_maybe_none('wage_offer') is not None and player.wage_offer >= player.reservation_wage:
@@ -73,6 +72,7 @@ def set_earnings(player: Player):
             player.earnings = 0  # Earnings remain 0 until the last period
 
 
+
 # PAGES
 class SetReservationWage(Page):
     form_model = 'player'
@@ -85,7 +85,7 @@ class SetReservationWage(Page):
     @staticmethod
     def vars_for_template(player: Player):
         if player.round_number > 1:
-            player.current_episode = player.in_round(player.round_number - 1).current_episode + 1
+            player.current_episode = player.in_round(player.round_number - 1).current_episode + 1  
         return {
             'search_episode_number': player.current_episode,
             'endowment': C.ENDOWMENT,
@@ -96,6 +96,8 @@ class SetReservationWage(Page):
         player.participant.vars["Reservartion"] = player.reservation_wage
         player.period_in_episode = 1
 
+    
+
 
 class Searching(Page):
 
@@ -104,14 +106,15 @@ class Searching(Page):
         player.participant.vars["New_episode"] = False
         if not player.field_maybe_none('current_episode'):
             player.current_episode = player.in_round(player.round_number - 1).current_episode
-        set_Max_period(player)
+        set_Max_period(player)    
         if not player.field_maybe_none('period_in_episode'):
-            player.period_in_episode = player.in_round(player.round_number - 1).period_in_episode + 1
+            player.period_in_episode = player.in_round(player.round_number - 1).period_in_episode + 1   
         if player.period_in_episode > 1:
             player.reservation_wage = player.participant.vars.get("Reservartion")
         set_wage_offer(player)
         wage_offer = player.field_maybe_none('wage_offer') or 'No offer'
         set_earnings(player)
+
 
         return {
             'search_episode_number': player.current_episode,
@@ -122,19 +125,18 @@ class Searching(Page):
         }
 
 
+
 class Results(Page):
 
     @staticmethod
     def is_displayed(player: Player):
         return player.accepted or player.period_in_episode == player.max_period_in_episode
-
     def before_next_page(player: Player, timeout_happened=False):
         player.participant.vars["New_episode"] = True
-
+        
     @staticmethod
     def app_after_this_page(player, upcoming_apps):
         if player.current_episode == C.MAX_EPISODE:
-            return upcoming_apps[0]
+            return upcoming_apps[0]    
 
-
-page_sequence = [SetReservationWage, Searching, Results]
+page_sequence = [SetReservationWage,Searching, Results]
