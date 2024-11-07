@@ -8,12 +8,11 @@
 {{next_button}}
 {% endblock %}
 
-
-
 {% block scripts %}
     <script>
         setTimeout(function() {
             document.querySelector('.otree-btn-next').click();
-        }, {{ chat_duration }} * 1000);
+        }, 60000);  // Fixed 60 seconds
     </script>
 {% endblock %}
+

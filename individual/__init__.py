@@ -93,7 +93,7 @@ class SetReservationWage(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
-        player.participant.vars["Reservartion"] = player.reservation_wage
+        player.participant.vars["Reservation"] = player.reservation_wage
         player.period_in_episode = 1
 
     
@@ -110,7 +110,7 @@ class Searching(Page):
         if not player.field_maybe_none('period_in_episode'):
             player.period_in_episode = player.in_round(player.round_number - 1).period_in_episode + 1   
         if player.period_in_episode > 1:
-            player.reservation_wage = player.participant.vars.get("Reservartion")
+            player.reservation_wage = player.participant.vars.get("Reservation")
         set_wage_offer(player)
         wage_offer = player.field_maybe_none('wage_offer') or 'No offer'
         set_earnings(player)
