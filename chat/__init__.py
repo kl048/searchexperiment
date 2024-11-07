@@ -85,6 +85,10 @@ def set_earnings(player: Player):
 class WaitForPartner(WaitPage):
     wait_for_all_groups = False  # Ensures only paired participants are synchronized
 
+    @staticmethod
+    def is_displayed(player: Player):
+        # Only display WaitPage at the start of each new episode
+        return player.participant.vars.get("New_episode") == True
 
 class Chat(Page):
     timeout_seconds = 60  # Set a fixed timeout directly
@@ -123,6 +127,8 @@ class SetReservationWage(Page):
     def vars_for_template(player: Player):
         if player.round_number > 1:
             player.current_episode = player.in_round(player.round_number - 1).current_episode + 1
+        player.period_in_episode = 1 #always start at period 1
+        set_Max_period(player)
         return {
             'search_episode_number': player.current_episode,
             'endowment': C.ENDOWMENT,
@@ -131,38 +137,41 @@ class SetReservationWage(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
         player.participant.vars["Reservation"] = player.reservation_wage
-        player.period_in_episode = 1
         player.participant.vars["New_episode"] = False  # Reset here, not in Chat
 
 class Searching(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        # Set New_episode to False only after SetReservationWage, not in Chat or Searching
+        # Ensure current_episode is set to a default value of 1 if not already set
+        player.current_episode = player.field_maybe_none('current_episode') or 1
+
+        # Set New_episode to False after SetReservationWage, not in Chat or Searching
         player.participant.vars["New_episode"] = False
 
-        # Ensure current_episode and period_in_episode are handled independently per player
-        if player.round_number > 1:
-            # Retrieve the current episode from the last round or initialize if it's the first period
-            player.current_episode = player.in_round(player.round_number - 1).current_episode or 1
+        # Initialize period_in_episode based on New_episode flag
+        if player.participant.vars.get("New_episode"):
+            # Start new episode with period 1
+            player.period_in_episode = 1
+        else:
+            # Continue incrementing within the episode
+            if player.round_number > 1:
+                # Increment period if continuing in the same episode
+                player.period_in_episode = player.in_round(player.round_number - 1).period_in_episode + 1
+            else:
+                player.period_in_episode = 1
 
-        # Set the max period in the episode based on the predefined dictionary
+        # Set the max period for the current episode
         set_Max_period(player)
 
-        # Retrieve and increment period_in_episode if it's not the first period
-        if player.round_number > 1:
-            previous_period = player.in_round(player.round_number - 1).period_in_episode or 1
-            player.period_in_episode = previous_period + 1 if not player.accepted else previous_period
-        else:
-            player.period_in_episode = 1  # Initialize for the first round
-
-        # Ensure period progression and wage acceptance check are individual to the player
+        # Retrieve reservation wage if not the first period
         if player.period_in_episode > 1:
             player.reservation_wage = player.participant.vars.get("Reservation")
 
-        set_wage_offer(player)  # Generate a wage offer individually for each player
+        # Generate wage offer and calculate earnings
+        set_wage_offer(player)
         wage_offer = player.field_maybe_none('wage_offer') or 'No offer'
-        set_earnings(player)  # Set earnings individually based on the player's wage offer and acceptance
+        set_earnings(player)
 
         return {
             'search_episode_number': player.current_episode,
@@ -171,6 +180,12 @@ class Searching(Page):
             'reservation_wage': player.reservation_wage,
             'accepted': player.accepted,
         }
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened=False):
+        # Check if the episode should end due to either period limit or wage acceptance
+        if player.period_in_episode >= player.max_period_in_episode or player.accepted:
+            player.participant.vars["New_episode"] = True
 
 
 
@@ -183,18 +198,23 @@ class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return {
-            'search_episode_number': player.current_episode,  # Pass the current episode number
-            'period_number': player.period_in_episode,       # Pass the period number if needed
-            'earnings': player.earnings                       # Pass earnings to the template
+            'search_episode_number': player.current_episode,
+            'period_number': player.period_in_episode,
+            'earnings': player.earnings
         }
 
     def before_next_page(player: Player, timeout_happened=False):
+        # Increment to the next episode and reset `period_in_episode` for the new episode
         player.participant.vars["New_episode"] = True
+        player.current_episode += 1
+        player.period_in_episode = 1  # Reset period for the new episode
+
 
     @staticmethod
     def app_after_this_page(player, upcoming_apps):
         if player.current_episode == C.MAX_EPISODE:
             return upcoming_apps[0]
+
 
 
 
