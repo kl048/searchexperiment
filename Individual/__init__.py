@@ -9,12 +9,12 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'Treament_Indivudal'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 40
+    NUM_ROUNDS = 95
     ENDOWMENT = 20
     ALPHA = 0.5
     THETA = 100
-    PERIODS = {1:5,2:7,3:5}
-    MAX_EPISODE = 3
+    PERIODS = {1: 5, 2: 7, 3: 5, 4:4, 5:6, 6:3, 7:5, 8:4, 9:6, 10:2, 11:4, 12:3, 13:6, 14:7, 15:4, 16:5, 17:3, 18:8, 19:6, 20:6}
+    MAX_EPISODE = 20
 
 
 class Subsession(BaseSubsession):
@@ -27,7 +27,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     reservation_wage = models.IntegerField(
-        min=0,
+        min=1,
         max=C.THETA,
         label="Set your reservation wage",
         initial=0
@@ -38,7 +38,7 @@ class Player(BasePlayer):
     current_episode = models.IntegerField()
     period_in_episode = models.IntegerField()
     max_period_in_episode = models.IntegerField()
-    check  = models.IntegerField()
+    check = models.IntegerField()
 
 #function:
 def creating_session(subsession:Subsession):
@@ -93,7 +93,7 @@ class SetReservationWage(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
-        player.participant.vars["Reservartion"] = player.reservation_wage
+        player.participant.vars["Reservation"] = player.reservation_wage
         player.period_in_episode = 1
 
     
@@ -110,7 +110,7 @@ class Searching(Page):
         if not player.field_maybe_none('period_in_episode'):
             player.period_in_episode = player.in_round(player.round_number - 1).period_in_episode + 1   
         if player.period_in_episode > 1:
-            player.reservation_wage = player.participant.vars.get("Reservartion")
+            player.reservation_wage = player.participant.vars.get("Reservation")
         set_wage_offer(player)
         wage_offer = player.field_maybe_none('wage_offer') or 'No offer'
         set_earnings(player)
