@@ -1,0 +1,12 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<h3>Episode {{ search_episode_number }} - Results</h3>
+<p>Period Number: {{ period_number }}</p>
+<p>Your Earnings: {{ earnings }}</p>
+
+{% next_button %}
+{% endblock %}

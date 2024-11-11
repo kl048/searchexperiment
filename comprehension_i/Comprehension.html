@@ -1,0 +1,52 @@
+{% extends 'global/Page.html' %}
+
+{% block styles %}
+<style>
+    .input-group, input.form-control, select.form-control {
+        max-width: 180px;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        let wrapper = $('<div class="input-group mb-3"></div>');
+
+        $('input[type="number"]').each(function (i) {
+            let ecuLabel = $('<span class="input-group-text">ECUs</span>');
+            $(this).wrap(wrapper).parents('.input-group').append(ecuLabel);
+        })
+    })
+</script>
+{% endblock %}
+
+{% block title %}Comprehension Quiz{% endblock %}
+
+{% block content %}
+{% if form.errors %}
+<div class="alert alert-danger">
+    Please fix the errors below:
+    <ul>
+        {% for field, errors in form.errors.items %}
+        <li>{{ field }}:
+            <ul>
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% for field, label in fields %}
+<div class="form-group">
+    {{ formfield field label=label }}
+    {{ formfield_errors field }}
+</div>
+{% endfor %}
+
+{% next_button %}
+{% endblock %}
