@@ -8,10 +8,10 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     dict(
-        name='search_experiment_individual',
+        name='search_experiment_Individual',
         display_name="Search Experiment (Individual)",
         num_demo_participants=1,
-        app_sequence=['comprehension_i', 'individual', 'crt', 'survey'],
+        app_sequence=['comprehension_i', 'Individual', 'crt', 'survey'],
         treatment='I',
         players_per_group=1
     ),
@@ -19,7 +19,7 @@ SESSION_CONFIGS = [
         name='search_experiment_chat',
         display_name="Search Experiment (Chat)",
         num_demo_participants=2,
-        app_sequence=['comprehension_c', 'chat', 'crt', 'survey'],
+        app_sequence=['chat', 'crt', 'survey'],
         treatment='C',
         players_per_group=2
     ),
@@ -30,6 +30,18 @@ SESSION_CONFIGS = [
         app_sequence=['comprehension_t', 'team', 'crt', 'survey'],
         treatment='T',
         players_per_group=2
+    ),
+    dict(
+        name='Demo_I',
+        display_name="Search Experiment (Individual)",
+        num_demo_participants=2,
+        app_sequence=['Individual'],
+    ),
+    dict(
+        name='Demo_C',
+        display_name="Search Experiment (chat)",
+        num_demo_participants=2,
+        app_sequence=['Chat_chizhe'],
     ),
 ]
 
