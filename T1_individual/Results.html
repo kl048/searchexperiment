@@ -1,0 +1,17 @@
+
+{% extends 'global/Page.html' %}
+{% load otree %}
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block content %}
+    <h3>Search Episode {{ player.round_number }}</h3>
+    <p>Your reservation wage: {{ player.reservation_wage }}</p>
+    <p>Employed: {{ player.accepted }}</p>
+    <p>Your earnings: {{ player.earnings }}</p>
+    {% next_button %}
+{% endblock %}
+
+

@@ -11,7 +11,7 @@ SESSION_CONFIGS = [
         name='search_experiment_Individual',
         display_name="Search Experiment (Individual)",
         num_demo_participants=1,
-        app_sequence=['comprehension_i', 'Individual', 'crt', 'survey'],
+        app_sequence=['comprehension_i', 'individual', 'crt', 'survey'],
         treatment='I',
         players_per_group=1
     ),
@@ -35,7 +35,7 @@ SESSION_CONFIGS = [
         name='Demo_I',
         display_name="Search Experiment (Individual)",
         num_demo_participants=2,
-        app_sequence=['Individual'],
+        app_sequence=['individual'],
     ),
     dict(
         name='Demo_C',
