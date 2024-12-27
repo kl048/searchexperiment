@@ -1,0 +1,26 @@
+
+{% extends 'global/Page.html' %}
+{% load otree %}
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block content %}
+<h3>Search Episode {{ player.round_number }}</h3>
+<p>Your reservation wage: {{ player.reservation_wage }}</p>
+<p>Employed: {{ player.accepted }}</p>
+
+{% if Treatment == "T" %}
+    <p>Your earnings before sharing: {{ player.earnings_before_sharing }}</p>
+    <p>Partner employed: {{ partner_accepted }}</p>
+    <p>Partner's earnings before sharing: {{ partner_earnings_before_sharing }}</p>
+    <p>Your earnings after sharing: {{ player.earnings }}</p>
+{% else %}
+    <p>Your earnings: {{ player.earnings }}</p>
+{% endif %}
+
+{% next_button %}
+{% endblock %}
+
+

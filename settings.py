@@ -32,16 +32,28 @@ SESSION_CONFIGS = [
         players_per_group=2
     ),
     dict(
-        name='Demo_I',
-        display_name="Search Experiment (Individual)",
-        num_demo_participants=2,
-        app_sequence=['individual'],
+        name='Demo_Individual',
+        display_name="Demo_I",
+        num_demo_participants=1,
+        app_sequence=['Main'],
+        treatment='I',
+        players_per_group=1
     ),
     dict(
-        name='Demo_C',
-        display_name="Search Experiment (chat)",
+        name='Demo_Chat',
+        display_name="Demo_C",
+        num_demo_participants=1,
+        app_sequence=['Main'],
+        treatment='C',
+        players_per_group=1
+    ),
+    dict(
+        name='Demo_Team',
+        display_name="Demo_T",
         num_demo_participants=2,
-        app_sequence=['Chat_chizhe'],
+        app_sequence=['Main'],
+        treatment='T',
+        players_per_group=2
     ),
 ]
 
