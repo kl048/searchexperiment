@@ -129,6 +129,16 @@ class Results(Page):
         treatment = player.session.config['treatment']
         partner = player.get_others_in_group()[0] if treatment == 'T' else None
 
+        # Save episode number and earnings to participant variable
+        if 'earnings_history' not in player.participant.vars:
+            player.participant.vars['earnings_history'] = []
+
+        # Append current episode data
+        player.participant.vars['earnings_history'].append({
+            'episode': player.round_number,
+            'earnings': player.earnings,
+        })
+        
         return {
             'Treatment': treatment,
             'partner_accepted': partner.accepted if treatment == 'T' else None,
