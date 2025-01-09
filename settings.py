@@ -35,27 +35,24 @@ SESSION_CONFIGS = [
         name='Demo_Individual',
         display_name="Demo_I",
         num_demo_participants=1,
-        app_sequence=['Main','Payment'],
+        app_sequence=['Main_1','Payment'],
         treatment='I',
-        players_per_group=1,
         real_world_currency_per_point = 0.5 # 1 ECUS = 0.5 dollars
     ),
     dict(
         name='Demo_Chat',
         display_name="Demo_C",
-        num_demo_participants=1,
-        app_sequence=['Main','Payment'],
+        num_demo_participants=2,
+        app_sequence=['Main_2','Payment'],
         treatment='C',
-        players_per_group=2,
         real_world_currency_per_point =0.5
     ),
     dict(
         name='Demo_Team',
         display_name="Demo_T",
         num_demo_participants=2,
-        app_sequence=['Main','Payment'],
+        app_sequence=['Main_2','Payment'],
         treatment='T',
-        players_per_group=2,
         real_world_currency_per_point =0.5
     ),
 ]

@@ -1,0 +1,93 @@
+{% block content %}
+<h3>Search Episode {{ player.round_number }} - Period <span id="period">1</span></h3>
+<p>Wage offer: <span id="wage">-</span></p>
+<p>Offer accepted: <span id="accepted">-</span></p>
+
+<form method="post">
+    <input type="hidden" name="wage_offer" value="" id="wage-offer-field">
+    <input type="hidden" name="accepted" value="" id="accepted-field">
+    <input type="hidden" name="wage_offer_history" value="" id="wage-offer-history-field">
+    <button type="button" id="next-period" style="margin-top: 10px;">Next Period</button>
+    <p id="message" style="color: green; display: none;">Go to the next Episode.</p>
+    <button type="submit" id="next-episode" style="margin-top: 10px; display: none;">Next Episode</button>
+</form>
+
+<script>
+    // Constants from Python
+    const alpha = parseFloat("{{ C.ALPHA }}");
+    const theta = parseInt("{{ C.THETA }}", 10);
+    const reservationWage = parseInt("{{ player.reservation_wage }}", 10);
+    const maxPeriodInEpisode = parseInt("{{ player.max_period_in_episode }}", 10);
+    let period = 1;
+
+    // Initialize the wage offer history list
+    const wageOfferHistory = [];
+
+    // Update the period display on the page
+    document.getElementById('period').textContent = period;
+
+    // Function to determine wage offer
+    function determineWageOffer() {
+        const randomNumber = Math.random();
+        let wageOffer;
+
+        if (randomNumber < alpha) {
+            // No offer
+            wageOffer = null;
+            document.getElementById('wage').textContent = "No offer";
+            document.getElementById('accepted').textContent = "No";
+        } else {
+            // Draw wage offer from [0, theta], rounded to an integer
+            wageOffer = Math.floor(Math.random() * theta);
+            document.getElementById('wage').textContent = wageOffer;
+
+            // Check if the offer meets or exceeds the reservation wage
+            if (wageOffer >= reservationWage) {
+                document.getElementById('accepted').textContent = "Yes";
+            } else {
+                document.getElementById('accepted').textContent = "No";
+            }
+        }
+
+        // Save the period number and wage offer to the history
+        wageOfferHistory.push({
+            period: period,
+            wageOffer: wageOffer === null ? "No offer" : wageOffer,
+        });
+
+        // Check the conditions after determining the wage offer
+        checkConditions(wageOffer);
+    }
+
+    // Function to check the conditions
+    function checkConditions(lastWageOffer) {
+        const accepted = document.getElementById('accepted').textContent === "Yes";
+
+        if (accepted || period === maxPeriodInEpisode) {
+            document.getElementById('message').style.display = 'block'; // Show success message
+            document.getElementById('next-episode').style.display = 'block'; // Show Next Episode button
+            document.getElementById('next-period').style.display = 'none'; // Hide Next Period button
+
+            // Save values to form fields
+            document.getElementById('wage-offer-field').value = lastWageOffer !== null ? lastWageOffer : "";
+            document.getElementById('accepted-field').value = accepted;
+            document.getElementById('wage-offer-history-field').value = JSON.stringify(wageOfferHistory);
+        }
+    }
+
+    // Initial wage offer when page loads
+    determineWageOffer();
+
+    // Handle the Next Period button click
+    document.getElementById('next-period').addEventListener('click', function () {
+        // Increment the period number
+        period += 1;
+
+        // Update the period display
+        document.getElementById('period').textContent = period;
+
+        // Determine the new wage offer
+        determineWageOffer();
+    });
+</script>
+{% endblock %}
