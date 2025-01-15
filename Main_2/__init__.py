@@ -106,6 +106,14 @@ class SetReservationWage(Page):
     def before_next_page(player: Player, timeout_happened=False):
         set_Max_period(player)
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        treatment = player.session.config['treatment']
+        
+        return {
+            'Treatment': treatment,
+        }    
+
 
 class Searching(Page):
     form_model = 'player'
@@ -142,6 +150,7 @@ class Results(Page):
         return {
             'Treatment': treatment,
             'partner_accepted': partner.accepted if treatment == 'T' else None,
+            'partner_reservation_wage': partner.reservation_wage if treatment == 'T' else None,
             'partner_earnings_before_sharing': partner.earnings_before_sharing if treatment == 'T' else None,
             'partner_earning_after_sharing': partner.earnings if treatment == 'T' else None,
         }

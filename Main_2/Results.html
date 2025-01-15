@@ -13,13 +13,16 @@
 
 {% if Treatment == "T" %}
     <p>Your earnings before sharing: {{ player.earnings_before_sharing }}</p>
+    <br>
+    <p>Partner's reservation wage: {{ partner_reservation_wage }}</p>
     <p>Partner employed: {{ partner_accepted }}</p>
     <p>Partner's earnings before sharing: {{ partner_earnings_before_sharing }}</p>
+    <br>
     <p>Your earnings after sharing: {{ player.earnings }}</p>
 {% else %}
     <p>Your earnings: {{ player.earnings }}</p>
 {% endif %}
-
+<br>
 {% next_button %}
 {% endblock %}
 

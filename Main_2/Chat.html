@@ -6,22 +6,4 @@
 <div id="chat-container">
     {{ chat }}
 </div>
-<div id="next-button-container" style="display: none;">
-    {{ next_button }}
-</div>
-
-<script>
-    // JavaScript to show the "Next" button after a delay
-    function showButtonAfterTSeconds(buttonContainerId, t) {
-        const buttonContainer = document.getElementById(buttonContainerId);
-        if (buttonContainer) {
-            setTimeout(() => {
-                buttonContainer.style.display = "block"; // Show the button after t seconds
-            }, t * 1000); // Convert seconds to milliseconds
-        }
-    }
-
-    // Hide the button for the first 30 seconds
-    showButtonAfterTSeconds("next-button-container", 30);
-</script>
 {% endblock %}
