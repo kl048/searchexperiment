@@ -1,0 +1,31 @@
+{% extends "global/Page.html" %}
+
+{% block content %}
+    <p><b>Please answer the following questions.</b></p>
+
+    {{ formfield "locus_q1_choice" }}
+    <div style="margin-left: 30px;">
+        {{ formfield "locus_q1_closeness" }}
+    </div>
+    <hr style="border: 1px solid black;">
+
+    {{ formfield "locus_q2_choice" }}
+    <div style="margin-left: 30px;">
+        {{ formfield "locus_q2_closeness" }}
+    </div>
+    <hr style="border: 1px solid black;">
+
+    {{ formfield "locus_q3_choice" }}
+    <div style="margin-left: 30px;">
+        {{ formfield "locus_q3_closeness" }}
+    </div>
+    <hr style="border: 1px solid black;">
+
+    {{ formfield "locus_q4_choice" }}
+    <div style="margin-left: 30px;">
+        {{ formfield "locus_q4_closeness" }}
+    </div>
+    <hr style="border: 1px solid black;">
+
+    {{ next_button }}
+{% endblock %}

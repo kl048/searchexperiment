@@ -1,0 +1,63 @@
+{% extends "global/Page.html" %}
+
+{% block title %}
+    Risk Preferences: Paired Lotteries
+{% endblock %}
+
+{% block content %}
+<style>
+    td label {
+        margin-right: 20px;  /* Adds spacing between the radio buttons */
+    }
+</style>
+
+<p>Please choose between the lottery and the safe payment for each of the scenarios below:</p>
+
+    <form method="post">
+        <table border="1" style="width:100%; border-collapse: collapse; text-align: center;">
+            <thead>
+                <tr>
+                    <th>Scenario</th>
+                    <th>Lottery (50% chance of $300, 50% chance of $0)</th>
+                    <th>Safe Payment</th>
+                    <th>Your Choice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Scenario 1</td><td>50% chance of $300, 50% chance of $0</td><td>$0</td><td><label><input type="radio" name="scenario_1" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_1" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 2</td><td>50% chance of $300, 50% chance of $0</td><td>$10</td><td><label><input type="radio" name="scenario_2" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_2" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 3</td><td>50% chance of $300, 50% chance of $0</td><td>$20</td><td><label><input type="radio" name="scenario_3" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_3" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 4</td><td>50% chance of $300, 50% chance of $0</td><td>$30</td><td><label><input type="radio" name="scenario_4" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_4" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 5</td><td>50% chance of $300, 50% chance of $0</td><td>$40</td><td><label><input type="radio" name="scenario_5" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_5" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 6</td><td>50% chance of $300, 50% chance of $0</td><td>$50</td><td><label><input type="radio" name="scenario_6" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_6" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 7</td><td>50% chance of $300, 50% chance of $0</td><td>$60</td><td><label><input type="radio" name="scenario_7" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_7" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 8</td><td>50% chance of $300, 50% chance of $0</td><td>$70</td><td><label><input type="radio" name="scenario_8" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_8" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 9</td><td>50% chance of $300, 50% chance of $0</td><td>$80</td><td><label><input type="radio" name="scenario_9" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_9" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 10</td><td>50% chance of $300, 50% chance of $0</td><td>$90</td><td><label><input type="radio" name="scenario_10" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_10" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 11</td><td>50% chance of $300, 50% chance of $0</td><td>$100</td><td><label><input type="radio" name="scenario_11" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_11" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 12</td><td>50% chance of $300, 50% chance of $0</td><td>$110</td><td><label><input type="radio" name="scenario_12" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_12" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 13</td><td>50% chance of $300, 50% chance of $0</td><td>$120</td><td><label><input type="radio" name="scenario_13" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_13" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 14</td><td>50% chance of $300, 50% chance of $0</td><td>$130</td><td><label><input type="radio" name="scenario_14" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_14" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 15</td><td>50% chance of $300, 50% chance of $0</td><td>$140</td><td><label><input type="radio" name="scenario_15" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_15" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 16</td><td>50% chance of $300, 50% chance of $0</td><td>$150</td><td><label><input type="radio" name="scenario_16" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_16" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 17</td><td>50% chance of $300, 50% chance of $0</td><td>$160</td><td><label><input type="radio" name="scenario_17" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_17" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 18</td><td>50% chance of $300, 50% chance of $0</td><td>$170</td><td><label><input type="radio" name="scenario_18" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_18" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 19</td><td>50% chance of $300, 50% chance of $0</td><td>$180</td><td><label><input type="radio" name="scenario_19" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_19" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 20</td><td>50% chance of $300, 50% chance of $0</td><td>$190</td><td><label><input type="radio" name="scenario_20" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_20" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 21</td><td>50% chance of $300, 50% chance of $0</td><td>$200</td><td><label><input type="radio" name="scenario_21" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_21" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 22</td><td>50% chance of $300, 50% chance of $0</td><td>$210</td><td><label><input type="radio" name="scenario_22" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_22" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 23</td><td>50% chance of $300, 50% chance of $0</td><td>$220</td><td><label><input type="radio" name="scenario_23" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_23" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 24</td><td>50% chance of $300, 50% chance of $0</td><td>$230</td><td><label><input type="radio" name="scenario_24" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_24" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 25</td><td>50% chance of $300, 50% chance of $0</td><td>$240</td><td><label><input type="radio" name="scenario_25" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_25" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 26</td><td>50% chance of $300, 50% chance of $0</td><td>$250</td><td><label><input type="radio" name="scenario_26" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_26" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 27</td><td>50% chance of $300, 50% chance of $0</td><td>$260</td><td><label><input type="radio" name="scenario_27" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_27" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 28</td><td>50% chance of $300, 50% chance of $0</td><td>$270</td><td><label><input type="radio" name="scenario_28" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_28" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 29</td><td>50% chance of $300, 50% chance of $0</td><td>$280</td><td><label><input type="radio" name="scenario_29" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_29" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 30</td><td>50% chance of $300, 50% chance of $0</td><td>$290</td><td><label><input type="radio" name="scenario_30" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_30" value="safe"> Safe Payment</label></td></tr>
+                <tr><td>Scenario 31</td><td>50% chance of $300, 50% chance of $0</td><td>$300</td><td><label><input type="radio" name="scenario_31" value="lottery" required> Lottery</label><label><input type="radio" name="scenario_31" value="safe"> Safe Payment</label></td></tr>
+            </tbody>
+        </table>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
