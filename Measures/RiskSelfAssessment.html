@@ -9,9 +9,10 @@
     <p>Are you generally a person who is fully prepared to take risks or do you try to avoid taking risks?</p>
     <form method="post">
         <label for="risk_self_assessment">
+            <b>Please drag the slider-</b>
             Rate yourself from 0 to 10, where 0 means "unwilling to take any risks" and 10 means "fully prepared to take risks":
         </label><br><br>
-        <input type="range" id="risk_self_assessment" name="risk_self_assessment" min="0" max="10" step="1"
+        <input type="range" id="risk_self_assessment" name="risk_self_assessment" min="0" max="10" value="0" step="1"
                oninput="sliderValue.innerText = this.value" required style="width: 100%; max-width: 600px;">
         <span id="sliderValue">5</span>
         <br><br>

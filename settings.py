@@ -13,7 +13,7 @@ SESSION_CONFIGS = [
         num_demo_participants=1,
         app_sequence=['comprehension_i', 'Main_Ind', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='I',
-        real_world_currency_per_point = 0.25 # 1 ECUS = 0.5 dollars
+        real_world_currency_per_point = 0.25 # 1 ECUS = 0.25 dollars
     ),
     dict(
         name='Chat',
@@ -39,6 +39,7 @@ USE_POINTS = True
 POINTS_CUSTOM_NAME = 'ECUs'
 REAL_WORLD_CURRENCY_DECIMAL_PLACES = 2
 USE_POINTS_DECIMAL_PLACES = 0
+CSRF_ENABLED = True
 
 ROOMS = []
 

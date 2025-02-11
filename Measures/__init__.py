@@ -12,6 +12,41 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
+
+        # Store each scenario choice separately
+    risk_choice_1 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 1")
+    risk_choice_2 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 2")
+    risk_choice_3 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 3")
+    risk_choice_4 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 4")
+    risk_choice_5 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 5")
+    risk_choice_6 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 6")
+    risk_choice_7 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 7")
+    risk_choice_8 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 8")
+    risk_choice_9 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 9")
+    risk_choice_10 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 10")
+    risk_choice_11 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 11")
+    risk_choice_12 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 12")
+    risk_choice_13 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 13")
+    risk_choice_14 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 14")
+    risk_choice_15 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 15")
+    risk_choice_16 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 16")
+    risk_choice_17 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 17")
+    risk_choice_18 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 18")
+    risk_choice_19 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 19")
+    risk_choice_20 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 20")
+    risk_choice_21 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 21")
+    risk_choice_22 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 22")
+    risk_choice_23 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 23")
+    risk_choice_24 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 24")
+    risk_choice_25 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 25")
+    risk_choice_26 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 26")
+    risk_choice_27 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 27")
+    risk_choice_28 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 28")
+    risk_choice_29 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 29")
+    risk_choice_30 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 30")
+    risk_choice_31 = models.StringField(choices=['Lottery', 'Safe Payment'], label="Scenario 31")
+
+
     # Risk preferences self-assessment
     risk_self_assessment = models.IntegerField(
         label="Are you generally a person who is fully prepared to take risks or do you try to avoid taking risks?",
@@ -220,47 +255,6 @@ class Player(BasePlayer):
                  ['5', 'Extremely important']],
         widget=widgets.RadioSelect
     )
-    prob_q1 = models.FloatField(
-        label="Suppose you flip a fair coin, meaning that the probability of heads is 0.5 and the probability of tails is 0.5. Suppose you flip the coin twice. If the first time that you flip the coin it comes up heads, "
-              "what is the probability that it will be heads on the second flip? (Enter as a decimal between 0 and 1)",
-        min=0, max=1
-    )
-    prob_q2 = models.FloatField(
-        label=" Suppose that the probability that Ken shows up to work in a green shirt on any given day is 0.3 and that the probability that Jill shows up to work in a green shirt on any given day is 0.4. "
-              "Assuming that Ken and Jill do not coordinate the shirts that they wear to work on any given day, what is the probability of both Ken and Jill showing up to work in green shirts on the same day?(Enter as a decimal between 0 and 1)",
-        min=0, max=1
-    )
-    prob_q3 = models.FloatField(
-        label="Suppose that the probability that a pregnant pig gives birth to one pig is 0.2 and the probability that she gives birth to two pigs is 0.8. "
-              "The expected number of pigs that the pregnant pig will give birth to is What is the expected number of piglets? (Enter as a decimal)",
-        min=0, max=1
-    )
-    prob_q4 = models.FloatField(
-        label="Suppose that the probability of rain tomorrow is 0.3.  On days when it rains, the probability of 1 inch of rainfall is 0.5, the probability of 2 inches of rainfall is 0.3, "
-              "and the probability of 3 inches of rainfall is 0.2. The expected amount of rainfall tomorrow is. What is the expected rainfall? (Enter as a decimal)",
-        min=0, max=1
-    )
-
-    # Stores "Correct" or "Wrong" as a string
-    prob_q1_correct = models.StringField()
-    prob_q2_correct = models.StringField()
-    prob_q3_correct = models.StringField()
-    prob_q4_correct = models.StringField()
-
-    def store_correctness(self):
-        """Stores 'Correct' or 'Wrong' for each probability question."""
-        correct_answers = {
-            'prob_q1': 0.5,
-            'prob_q2': 0.12,  # 0.3 * 0.4
-            'prob_q3': 1.8,  # (0.2 * 1) + (0.8 * 2)
-            'prob_q4': 1.3,  # 0.3 * (0.5*1 + 0.3*2 + 0.2*3)
-        }
-
-        # Compare player responses to correct answers and store result
-        self.prob_q1_correct = "Correct" if abs(self.prob_q1 - correct_answers['prob_q1']) < 0.01 else "Wrong"
-        self.prob_q2_correct = "Correct" if abs(self.prob_q2 - correct_answers['prob_q2']) < 0.01 else "Wrong"
-        self.prob_q3_correct = "Correct" if abs(self.prob_q3 - correct_answers['prob_q3']) < 0.01 else "Wrong"
-        self.prob_q4_correct = "Correct" if abs(self.prob_q4 - correct_answers['prob_q4']) < 0.01 else "Wrong"
 
 
     competitiveness_q1 = models.StringField(
@@ -313,8 +307,29 @@ class RiskSelfAssessment(Page):
     form_model = 'player'
     form_fields = ['risk_self_assessment']
 
+
 class RiskLottery(Page):
     form_model = 'player'
+    form_fields = [
+        'risk_choice_1', 'risk_choice_2', 'risk_choice_3', 'risk_choice_4', 'risk_choice_5',
+        'risk_choice_6', 'risk_choice_7', 'risk_choice_8', 'risk_choice_9', 'risk_choice_10',
+        'risk_choice_11', 'risk_choice_12', 'risk_choice_13', 'risk_choice_14', 'risk_choice_15',
+        'risk_choice_16', 'risk_choice_17', 'risk_choice_18', 'risk_choice_19', 'risk_choice_20',
+        'risk_choice_21', 'risk_choice_22', 'risk_choice_23', 'risk_choice_24', 'risk_choice_25',
+        'risk_choice_26', 'risk_choice_27', 'risk_choice_28', 'risk_choice_29', 'risk_choice_30',
+        'risk_choice_31'
+    ]
+
+    def vars_for_template(self):
+        # Ensure scenarios are passed to the template
+        return {
+            'scenarios': [
+                {'number': i, 'safe_payment': (i - 1) * 10, 'formfield_name': f'risk_choice_{i}'}
+                for i in range(1, 32)
+            ]
+        }
+
+
 
 class LOTR(Page):
     form_model = 'player'
