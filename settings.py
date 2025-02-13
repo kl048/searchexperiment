@@ -33,6 +33,16 @@ SESSION_CONFIGS = [
     ),
 ]
 
+ROOMS = [
+    dict(
+        name='Searching',
+        display_name='Searching',
+        participant_label_file='_rooms/workstation.txt',
+        use_secure_urls=False
+    ),
+]
+
+
 LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
@@ -44,7 +54,7 @@ CSRF_ENABLED = True
 ROOMS = []
 
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+ADMIN_PASSWORD = '123'
 
 DEMO_PAGE_INTRO_HTML = """ """
 
