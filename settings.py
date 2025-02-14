@@ -35,9 +35,21 @@ SESSION_CONFIGS = [
 
 ROOMS = [
     dict(
-        name='Searching',
-        display_name='Searching',
-        participant_label_file='_rooms/workstation.txt',
+        name='Individual',
+        display_name='Individual',
+        participant_label_file='_rooms/workstation_1.txt',
+        use_secure_urls=False
+    ),
+    dict(
+        name='chat',
+        display_name='Room_chat',
+        participant_label_file='_rooms/workstation_2.txt',
+        use_secure_urls=False
+    ),
+    dict(
+        name='team',
+        display_name='Room_team',
+        participant_label_file='_rooms/workstation_3.txt',
         use_secure_urls=False
     ),
 ]
@@ -50,8 +62,6 @@ POINTS_CUSTOM_NAME = 'ECUs'
 REAL_WORLD_CURRENCY_DECIMAL_PLACES = 2
 USE_POINTS_DECIMAL_PLACES = 0
 CSRF_ENABLED = True
-
-ROOMS = []
 
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = '123'
