@@ -67,13 +67,13 @@ class Player(BasePlayer):
     def calculate_crt_payoff(self):
         solutions = {
             'quiz1': 5, 'quiz2': 5, 'quiz3': 47, 'quiz4': 9, 'quiz5': 12,
-            'quiz6': 14, 'quiz7': 0.5, 'quiz8': 0.12, 'quiz9': 1.8, 'quiz10': 1.3
+            'quiz6': 14, 'quiz7': 0.5, 'quiz8': 0.12, 'quiz9': 1.8, 'quiz10': 0.51
         }
 
         correct_count = sum(1 for quiz, answer in solutions.items() if getattr(self, quiz) == answer)
 
         #  Treat correct answers as ECUs
-        crt_earnings_ecu = correct_count * 0.8
+        crt_earnings_ecu = correct_count * 1
 
         self.participant.vars['crt_earnings'] = crt_earnings_ecu
         self.payoff += crt_earnings_ecu
@@ -90,7 +90,7 @@ class CRT(Page):
         """Checks for incorrect responses and updates error tracking."""
         solutions = {
             'quiz1': 5, 'quiz2': 5, 'quiz3': 47, 'quiz4': 9, 'quiz5': 12,
-            'quiz6': 14, 'quiz7': 0.5, 'quiz8': 0.12, 'quiz9': 1.8, 'quiz10': 1.3
+            'quiz6': 14, 'quiz7': 0.5, 'quiz8': 0.12, 'quiz9': 1.8, 'quiz10': 0.51
         }
 
         errors = {k: solutions[k] for k, v in values.items() if v != solutions[k]}

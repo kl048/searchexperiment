@@ -33,6 +33,89 @@ SESSION_CONFIGS = [
     ),
 ]
 
+ROOMS = [
+    dict(
+        name='Chat_1',
+        display_name='Chat_1',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Chat_2',
+        display_name='Chat_2',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Chat_3',
+        display_name='Chat_3',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Chat_4',
+        display_name='Chat_4',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Chat_5',
+        display_name='Chat_5',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Chat_6',
+        display_name='Chat_6',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Chat_7',
+        display_name='Chat_7',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Chat_8',
+        display_name='Chat_8',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+dict(
+        name='Team_1',
+        display_name='Team_1',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Team_2',
+        display_name='Team_2',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Team_3',
+        display_name='Team_3',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Team_4',
+        display_name='Team_4',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Team_5',
+        display_name='Team_5',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Team_6',
+        display_name='Team_6',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Team_7',
+        display_name='Team_7',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
+        name='Team_8',
+        display_name='Team_8',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+]
+
 LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
@@ -41,7 +124,6 @@ REAL_WORLD_CURRENCY_DECIMAL_PLACES = 2
 USE_POINTS_DECIMAL_PLACES = 0
 CSRF_ENABLED = True
 
-ROOMS = []
 
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
@@ -52,4 +134,4 @@ SECRET_KEY = 'your_secret_key'
 
 INSTALLED_APPS = ['otree']
 
-DEBUG = True
+DEBUG = False
