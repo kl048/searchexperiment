@@ -1,15 +1,42 @@
-
 {% block title %}Chat with Partner{% endblock %}
 
 {% block content %}
 <head>
-<style>
-</style>
+    <style>
+        /* Add styles here if needed */
+    </style>
 </head>
 <body>
 <h3>Episode {{ player.round_number }} - Chat with Your Partner</h3>
 <p>Chat Duration: {{ chat_duration }} seconds</p>
-    {{ chat }}
+
+{{ chat }}  <!-- oTree's built-in chat system -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let chatDuration = Number("{{ chat_duration }}") * 1000; // ✅ Convert to a number safely
+
+        console.log("Chat script loaded. Waiting for timeout...");
+
+        setTimeout(function () {
+            let systemMessage = "System: Episode " + "{{ player.round_number }}" + " has ended."; // ✅ Fix for Unexpected Token
+
+            // Find chat input box and send button
+            let chatInput = document.querySelector(".otree-chat__input");
+            let chatButton = document.querySelector(".otree-chat__btn-send");
+
+            console.log("Trying to send system message:", systemMessage);
+
+            if (chatInput && chatButton) {
+                chatInput.value = systemMessage;  // Insert system message into the chat box
+                chatButton.click();  // Simulate clicking the send button
+                console.log("✅ System message sent successfully!");
+            } else {
+                console.log("❌ Chat elements not found! Check class names.");
+            }
+
+        }, chatDuration - 1000);  // ✅ Send system message 1 second before chat ends
+    });
+</script>
 </body>
 {% endblock %}
-
