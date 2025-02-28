@@ -39,7 +39,7 @@ class Player(BasePlayer):
     earnings = models.CurrencyField(initial=0)
     earnings_before_sharing = models.CurrencyField(initial=0)
     max_period_in_episode = models.IntegerField()
-
+    instructions_count = models.IntegerField(initial=0)
 
 # Function
 def set_Max_period(player: Player):
@@ -104,7 +104,7 @@ class Chat(Page):
 
 class SetReservationWage(Page):
     form_model = 'player'
-    form_fields = ['reservation_wage']
+    form_fields = ['reservation_wage', 'instructions_count']
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
@@ -162,4 +162,4 @@ class Results(Page):
         }
 
 
-page_sequence = [WaitForPartner_begin, Chat, SetReservationWage, Searching, WaitForPartner_end, Results]
+page_sequence = [WaitForPartner_begin, Chat, SetReservationWage, Searching, WaitForPartner_end, Results ]
