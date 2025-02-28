@@ -155,4 +155,4 @@ class thankyou(Page):
     pass
 
 
-page_sequence = [demographics, tipi, behavioral, thankyou]
+page_sequence = [demographics, tipi]

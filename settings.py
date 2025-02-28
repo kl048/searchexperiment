@@ -2,36 +2,58 @@ from os import environ
 
 SESSION_CONFIG_DEFAULTS = {
     'real_world_currency_per_point': 1.00,
-    'participation_fee': 0.00,
+    'participation_fee': 5.00,
     'doc': "",
 }
 
 SESSION_CONFIGS = [
     dict(
-        name='search_experiment_individual',
-        display_name="Search Experiment (Individual)",
+        name='Individual',
+        display_name="Individual",
         num_demo_participants=1,
-        app_sequence=['comprehension_i', 'individual', 'crt', 'survey'],
+        app_sequence=['comprehension_i', 'Main_Ind', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='I',
-        players_per_group=1
+        real_world_currency_per_point = 0.25 # 1 ECUS = 0.25 dollars
     ),
     dict(
-        name='search_experiment_chat',
-        display_name="Search Experiment (Chat)",
+        name='Chat',
+        display_name="Chat",
         num_demo_participants=2,
-        app_sequence=['comprehension_c', 'chat', 'crt', 'survey'],
+        app_sequence=['comprehension_c', 'Main', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='C',
-        players_per_group=2
+        real_world_currency_per_point =0.25
     ),
     dict(
-        name='search_experiment_team',
-        display_name="Search Experiment (Team)",
+        name='Team',
+        display_name="Team",
         num_demo_participants=2,
-        app_sequence=['comprehension_t', 'team', 'crt', 'survey'],
+        app_sequence=['comprehension_t', 'Main', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='T',
-        players_per_group=2
+        real_world_currency_per_point =0.25
     ),
 ]
+
+ROOMS = [
+    dict(
+        name='Individual',
+        display_name='Individual',
+        participant_label_file='_rooms/workstation_1.txt',
+        use_secure_urls=False
+    ),
+    dict(
+        name='chat',
+        display_name='Room_chat',
+        participant_label_file='_rooms/workstation_2.txt',
+        use_secure_urls=False
+    ),
+    dict(
+        name='team',
+        display_name='Room_team',
+        participant_label_file='_rooms/workstation_3.txt',
+        use_secure_urls=False
+    ),
+]
+
 
 LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'
@@ -39,11 +61,10 @@ USE_POINTS = True
 POINTS_CUSTOM_NAME = 'ECUs'
 REAL_WORLD_CURRENCY_DECIMAL_PLACES = 2
 USE_POINTS_DECIMAL_PLACES = 0
-
-ROOMS = []
+CSRF_ENABLED = True
 
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+ADMIN_PASSWORD = '123'
 
 DEMO_PAGE_INTRO_HTML = """ """
 

@@ -1,0 +1,65 @@
+{% extends "global/Page.html" %}
+
+{% block content %}
+    <p><b>Please answer the following questions.</b></p>
+
+    <!-- Question 1 -->
+    <div>
+        {{ formfield "locus_q1_choice" }}
+        <div id="closeness_q1" style="display: none; margin-left: 30px;">
+            {{ formfield "locus_q1_closeness" }}
+        </div>
+    </div>
+    <hr style="border: 1px solid black;">
+
+    <!-- Question 2 -->
+    <div>
+        {{ formfield "locus_q2_choice" }}
+        <div id="closeness_q2" style="display: none; margin-left: 30px;">
+            {{ formfield "locus_q2_closeness" }}
+        </div>
+    </div>
+    <hr style="border: 1px solid black;">
+
+    <!-- Question 3 -->
+    <div>
+        {{ formfield "locus_q3_choice" }}
+        <div id="closeness_q3" style="display: none; margin-left: 30px;">
+            {{ formfield "locus_q3_closeness" }}
+        </div>
+    </div>
+    <hr style="border: 1px solid black;">
+
+    <!-- Question 4 -->
+    <div>
+        {{ formfield "locus_q4_choice" }}
+        <div id="closeness_q4" style="display: none; margin-left: 30px;">
+            {{ formfield "locus_q4_closeness" }}
+        </div>
+    </div>
+    <hr style="border: 1px solid black;">
+
+    {{ next_button }}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function showCloseness(questionId) {
+                document.getElementById(`closeness_q${questionId}`).style.display = "block";
+            }
+
+            document.querySelectorAll("input[name='locus_q1_choice']").forEach(el =>
+                el.addEventListener("change", () => showCloseness(1))
+            );
+            document.querySelectorAll("input[name='locus_q2_choice']").forEach(el =>
+                el.addEventListener("change", () => showCloseness(2))
+            );
+            document.querySelectorAll("input[name='locus_q3_choice']").forEach(el =>
+                el.addEventListener("change", () => showCloseness(3))
+            );
+            document.querySelectorAll("input[name='locus_q4_choice']").forEach(el =>
+                el.addEventListener("change", () => showCloseness(4))
+            );
+        });
+    </script>
+
+{% endblock %}

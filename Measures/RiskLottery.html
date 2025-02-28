@@ -1,0 +1,100 @@
+{% extends "global/Page.html" %}
+
+{% block title %}
+    Risk Preferences: Paired Lotteries
+{% endblock %}
+
+{% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-size: 18px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    td label {
+        margin-right: 15px;
+        display: inline-block;
+        font-size: 16px;
+    }
+
+    .bold-text {
+        font-weight: bold;
+    }
+
+    button {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Styling radio buttons */
+    input[type="radio"] {
+        transform: scale(1.2);
+        margin-right: 5px;
+    }
+</style>
+
+<p><b>Please choose between the lottery and the safe payment for each scenario below:</b></p>
+
+<form method="post">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Lottery</th>
+                <th>Safe Payment</th>
+                <th>Your Choice</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for scenario in scenarios %}
+            <tr>
+                <td>Scenario {{ scenario.number }}</td>
+                <td><b>50%</b> chance of <b>$300</b>, <b>50%</b> chance of <b>$0</b></td>
+                <td><b>{{ scenario.safe_payment }}</b></td>
+                <td>
+                    <label><input type="radio" name="{{ scenario.formfield_name }}" value="Lottery" required> Lottery</label>
+                    <label><input type="radio" name="{{ scenario.formfield_name }}" value="Safe Payment"> Safe Payment</label>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Display error messages for missing selections -->
+    {% for scenario in scenarios %}
+        {{ formfield_errors scenario.formfield_name }}
+    {% endfor %}
+
+{{ next_button }}
+
+{% endblock %}
