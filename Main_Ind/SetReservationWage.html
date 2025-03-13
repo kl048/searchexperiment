@@ -6,10 +6,13 @@ Set Reservation Wage
 {% endblock %}
 
 {% block content %}
+<p>
+
+</p>
 <div class="page-container">
     <!-- Left Side: Wage Entry -->
     <div class="left-side">
-        <h3>Search Episode {{ player.round_number }}</h3>
+        <h3>Job Search {{ player.round_number }}</h3>
         <form>
             <!-- Only render the visible field -->
             {{ form.reservation_wage }}
@@ -17,13 +20,14 @@ Set Reservation Wage
             <input type="hidden" name="instructions_count" id="instructions_count_field"
                    value="{{ player.field_maybe_none('instructions_count') }}">
         </form>
+        <p>
+
+        </p>
         {% next_button %}
     </div>
 
     <!-- Right Side: View Instructions Button -->
-    <div class="right-side">
-        <button type="button" class="btn btn-info" onclick="toggleInstructions()">View Instructions</button>
-    </div>
+
 </div>
 
 <!-- Hidden Instructions Section -->

@@ -1,28 +1,86 @@
-
 {% extends 'global/Page.html' %}
 {% load otree %}
 
 {% block title %}
-    Results
+    Job Search {{player.round_number}}- Results
 {% endblock %}
 
 {% block content %}
-<h3>Search Episode {{ player.round_number }}</h3>
-<p>Your reservation wage: {{ player.reservation_wage }}</p>
-<p>Employed: {{ player.accepted }}</p>
-
-{% if Treatment == "T" %}
-    <p>Your earnings before sharing: {{ player.earnings_before_sharing }}</p>
-    <br>
-    <p>Partner's reservation wage: {{ partner_reservation_wage }}</p>
-    <p>Partner employed: {{ partner_accepted }}</p>
-    <p>Partner's earnings before sharing: {{ partner_earnings_before_sharing }}</p>
-    <br>
-    <p>Your earnings after sharing: {{ player.earnings }}</p>
-{% else %}
-    <p>Your earnings: {{ player.earnings }}</p>
+    <p>Your Reservation Wage was <strong>{{ player.reservation_wage }} ECUs </strong>.</p>
+{% if player.accepted %}
+<p>You Accepted an Offer of <strong>{{ player.wage_offer }} ECUs </strong>  and earned <strong>{{ player.wage_offer }} ECUs </strong>.</p>
+    {% else %}
+        <p>You did <strong>not</strong> accept any wage offer this episode and earned <strong> {{ C.ENDOWMENT }} ECUs </strong>.</p>
 {% endif %}
-<br>
-{% next_button %}
+
+    <!-- Corrected earnings history table -->
+    <div class="table-container">
+        <table id="history-table">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Offer</th>
+                    <th>Decision</th>
+                    <th>Continue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in earnings_history_data %}
+                    <tr>
+                        <td>{{ entry.period }}</td>
+                        <td>{{ entry.offer }}</td>
+                        <td>{{ entry.decision }}</td>
+                        <td>{{ entry.continue }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<p>
+
+</p>
+    {% next_button %}
 {% endblock %}
 
+{% block styles %}
+<style>
+    .table-container {
+        margin-top: 20px;
+        margin-left: 20px;
+        overflow-x: auto;
+    }
+
+    #history-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    #history-table th, #history-table td {
+        padding: 12px;
+        text-align: center;
+        border: 2px solid #000;
+    }
+
+    #history-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    #history-table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #history-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    #history-table tbody tr:hover {
+        background-color: #e2e2e2;
+    }
+
+    #history-table tbody tr {
+        height: 40px;
+    }
+</style>
+{% endblock %}

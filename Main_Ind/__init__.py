@@ -1,3 +1,4 @@
+import json
 from otree.api import *
 
 doc = """
@@ -40,6 +41,15 @@ class Player(BasePlayer):
     earnings_before_sharing = models.CurrencyField(initial=0)
     max_period_in_episode = models.IntegerField()
     instructions_count = models.IntegerField(initial=0)
+    decision_history = models.StringField()
+    continue_history = models.StringField()
+
+    def serialize_history(self, history_list):
+        return json.dumps(history_list)
+
+    def deserialize_history(self, history_str):
+        return json.loads(history_str) if history_str else []
+
 
 # Function
 def set_Max_period(player: Player):
@@ -113,12 +123,31 @@ class SetReservationWage(Page):
 
 class Searching(Page):
     form_model = 'player'
-    form_fields = ['wage_offer', 'wage_offer_history', 'accepted']
+    form_fields = [
+        'wage_offer',
+        'accepted',
+        'wage_offer_history',
+        'decision_history',
+        'continue_history'
+    ]
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened=False):
-        if player.session.config['treatment'] in ['I', 'C']:
-            set_earnings_I_C(player)
+        wage_offer_history = player.deserialize_history(player.wage_offer_history)
+        decision_history = player.deserialize_history(player.decision_history)
+        continue_history = player.deserialize_history(player.continue_history)
+
+        # DO NOT CHANGE THESE HISTORY VALUES; they come correctly from JS already.
+        player.wage_offer_history = player.serialize_history(wage_offer_history)
+        player.decision_history = player.serialize_history(decision_history)
+        player.continue_history = player.serialize_history(continue_history)
+
+        # Earnings for individual treatment explicitly calculated here
+        if player.accepted:
+            player.earnings = player.wage_offer
+        else:
+            player.earnings = C.ENDOWMENT
+
 
 
 class WaitForPartner_end(WaitPage):
@@ -132,25 +161,55 @@ class WaitForPartner_end(WaitPage):
 class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        treatment = player.session.config['treatment']
-        partner = player.get_others_in_group()[0] if treatment == 'T' else None
-
-        # Save episode number and earnings to participant variable
+        #  Ensure `earnings_history` is stored properly for Payment
         if 'earnings_history' not in player.participant.vars:
-            player.participant.vars['earnings_history'] = []
+            player.participant.vars['earnings_history'] = []  #  Ensure the variable exists
 
-        # Append current episode data
+        #  Append episode number and earnings to `participant.vars`
         player.participant.vars['earnings_history'].append({
             'episode': player.round_number,
             'earnings': player.earnings,
         })
 
+        #  Debugging: Print `earnings_history` to confirm it's being stored
+        print(f"DEBUG: Earnings history in Results Page: {player.participant.vars['earnings_history']}")
+
+        # Deserialize history data to ensure it's available
+        wage_offer_history = json.loads(player.wage_offer_history) if player.wage_offer_history else []
+        decision_history = json.loads(player.decision_history) if player.decision_history else []
+        continue_history = json.loads(player.continue_history) if player.continue_history else []
+
+        #  Ensure all lists are the same length
+        max_length = max(len(wage_offer_history), len(decision_history), len(continue_history))
+
+        while len(wage_offer_history) < max_length:
+            wage_offer_history.append({"wageOffer": "No offer", "period": len(wage_offer_history) + 1})
+        while len(decision_history) < max_length:
+            decision_history.append("Reject")
+        while len(continue_history) < max_length:
+            continue_history.append("Yes")
+
+        #  Prepare data for results table (no changes from your version)
+        earnings_history_data = []
+        for i in range(len(wage_offer_history)):
+            offer = wage_offer_history[i]['wageOffer'] if isinstance(wage_offer_history[i], dict) else "No offer"
+            decision = decision_history[i] if decision_history[i] else "Reject"
+            continue_status = continue_history[i] if continue_history[i] else "Yes"
+
+            earnings_history_data.append({
+                'period': i + 1,
+                'offer': offer,
+                'decision': decision,
+                'continue': continue_status
+            })
+
         return {
-            'Treatment': treatment,
-            'partner_accepted': partner.accepted if treatment == 'T' else None,
-            'partner_earnings_before_sharing': partner.earnings_before_sharing if treatment == 'T' else None,
-            'partner_earning_after_sharing': partner.earnings if treatment == 'T' else None,
+            'earnings_history_data': earnings_history_data,
+            'player_earnings': player.earnings,
+            'reservation_wage': player.reservation_wage
         }
+
+
 
 
 page_sequence = [WaitForPartner_begin, Chat, SetReservationWage, Searching, WaitForPartner_end, Results]

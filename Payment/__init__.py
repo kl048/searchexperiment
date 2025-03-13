@@ -55,15 +55,22 @@ class Payment(Page):
             player.earning_drawn = player.group.earning_drawn
         else:
             earnings_history = player.participant.vars.get('earnings_history', [])
-            selected_episode = random.choice(earnings_history)
-            player.episode_drawn = selected_episode['episode']
-            player.earning_drawn = selected_episode['earnings']  # Keep in ECUs
+            print(
+                f"DEBUG: Retrieved earnings history in Payment for Player {player.id_in_group} (Chat Treatment): {earnings_history}")
+            if not earnings_history:
+                print("ERROR: Earnings history is empty in Payment! Assigning default values.")
+                player.episode_drawn = 0  #  Assign default episode
+                player.earning_drawn = cu(0)  #  Assign default earnings
+            else:
+                selected_episode = random.choice(earnings_history)
+                player.episode_drawn = selected_episode['episode']
+                player.earning_drawn = selected_episode['earnings']  # Keep in ECUs
 
-        # ✅ Store earnings in ECUs (oTree will convert it automatically)
+        #  Store earnings in ECUs (oTree will convert it automatically)
         player.participant.vars['final_payment'] = player.earning_drawn
         player.payoff = player.earning_drawn  # Store as ECU
 
-        # ✅ Debugging: Confirm the correct value is stored
+        #  Debugging: Confirm the correct value is stored
         print(f"DEBUG: In Payment App, stored final_payment (ECU) = {player.earning_drawn}")
 
         return {
