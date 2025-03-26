@@ -56,11 +56,11 @@ def set_Max_period(player: Player):
     player.max_period_in_episode = C.PERIODS[player.round_number]
 
 # Function to set earnings for Individual and Chat treatment
-def set_earnings_I_C(player: Player):
-    if player.accepted == True:
-        player.earnings = player.wage_offer
-    else:
-        player.earnings = C.ENDOWMENT
+#def set_earnings_I_C(player: Player):
+#    if player.accepted == True:
+#        player.earnings = player.wage_offer
+#    else:
+#        player.earnings = C.ENDOWMENT
 
 # Function to set earnings for Team treatment
 def set_earnings_T(group: Group):
