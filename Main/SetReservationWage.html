@@ -17,9 +17,10 @@ Set Reservation Wage
             <input type="hidden" name="instructions_count" id="instructions_count_field"
                    value="{{ player.field_maybe_none('instructions_count') }}">
         </form>
-        {% if Treatment == "T" %}
-        <p>Note: Your reservation wage will be shown to your partner in the result page</p>
-        {% endif %}
+        <br>
+        <!--{% if Treatment == "T" %}
+         <p>Note: Your reservation wage will be shown to your partner in the result page</p>
+        {% endif %}-->
         {% next_button %}
     </div>
 

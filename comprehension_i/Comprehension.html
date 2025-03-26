@@ -24,7 +24,7 @@
 {% block title %}Comprehension Quiz{% endblock %}
 
 {% block content %}
-{% if form.errors %}
+<!--{% if form.errors %}
 <div class="alert alert-danger">
     Please fix the errors below:
     <ul>
@@ -39,12 +39,12 @@
         {% endfor %}
     </ul>
 </div>
-{% endif %}
+{% endif %}-->
 
 {% for field, label in fields %}
 <div class="form-group">
     {{ formfield field label=label }}
-    {{ formfield_errors field }}
+    <!--{{ formfield_errors field }}-->
 </div>
 {% endfor %}
 

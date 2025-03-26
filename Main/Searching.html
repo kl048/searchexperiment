@@ -54,7 +54,7 @@
             decision = wageOffer >= reservationWage ? "Accept" : "Reject";
         } else {
             wageOffer = "No offer";
-            decision = "Reject";
+            decision = "-";
         }
 
         continueStatus = (decision === "Accept" || period >= maxPeriodInEpisode) ? "No" : "Yes";

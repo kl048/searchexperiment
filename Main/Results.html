@@ -22,6 +22,7 @@
 {% endif %}
 
     {% if Treatment == "T" %}
+        <!-- <p>The person you are paired with set a Reservation Wage of <strong> {{ partner_reservation_wage }} ECUs</strong> </p>-->
         <p>The person you are paired with earned <strong> {{ partner_earnings_before_sharing }} </strong> </p>
         <p>If this search episode is selected for payment, you and the person you are paired with will each receive
             <strong>({{ player.earnings_before_sharing }} + {{ partner_earnings_before_sharing }} ) / 2 = {{ player.earnings }} </strong></p>

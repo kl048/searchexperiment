@@ -35,6 +35,12 @@ SESSION_CONFIGS = [
 
 ROOMS = [
     dict(
+        name='Individual',
+        display_name='Individual',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+
+    dict(
         name='Chat_1',
         display_name='Chat_1',
         participant_label_file='_rooms/workstation.txt',
