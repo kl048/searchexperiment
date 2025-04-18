@@ -2,7 +2,7 @@ import json
 from otree.api import *
 
 doc = """
-Your app description
+
 """
 
 
@@ -10,10 +10,30 @@ class C(BaseConstants):
     NAME_IN_URL = 'Main_game_1'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 20
-    ENDOWMENT = 20
-    ALPHA = 0.5
+    ENDOWMENT = 10
     THETA = 100
-    PERIODS = {1: 5, 2: 7, 3: 5, 4:4, 5:6, 6:3, 7:5, 8:4, 9:6, 10:2, 11:4, 12:3, 13:6, 14:7, 15:4, 16:5, 17:3, 18:8, 19:6, 20:6}
+    PERIODS = {
+        1: 10,
+        2: 8,
+        3: 3,
+        4: 3,
+        5: 1,
+        6: 32,
+        7: 3,
+        8: 9,
+        9: 35,
+        10: 4,
+        11: 8,
+        12: 13,
+        13: 23,
+        14: 9,
+        15: 7,
+        16: 5,
+        17: 11,
+        18: 5,
+        19: 16,
+        20: 2,
+    }
     CHAT_LONG = 60
     CHAT_SHORT = 30
     NUM_CHAT_LONG = 5
@@ -56,11 +76,11 @@ def set_Max_period(player: Player):
     player.max_period_in_episode = C.PERIODS[player.round_number]
 
 
-#def set_earnings_I_C(player: Player):
-#    if player.accepted == True:
-#        player.earnings = player.wage_offer
-#    else:
-#        player.earnings = C.ENDOWMENT
+def set_earnings_I_C(player: Player):
+    if player.accepted == True:
+        player.earnings = player.wage_offer
+    else:
+        player.earnings = C.ENDOWMENT
 
 
 def set_earnings_T(group: Group):
@@ -209,7 +229,17 @@ class Results(Page):
             'reservation_wage': player.reservation_wage
         }
 
+class ReflectionPage(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return True
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        # 60 seconds for rounds 1–5, otherwise 30 seconds
+        duration = 60 if player.round_number <= 5 else 30
+        return {'duration': duration}
 
 
 
-page_sequence = [WaitForPartner_begin, Chat, SetReservationWage, Searching, WaitForPartner_end, Results]
+page_sequence = [WaitForPartner_begin, Chat, ReflectionPage, SetReservationWage, Searching, WaitForPartner_end, Results]

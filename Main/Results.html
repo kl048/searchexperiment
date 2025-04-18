@@ -15,17 +15,16 @@
     {% endif %}
 {% else %}
     {% if Treatment == "T" %}
-        <p>You did <strong>not</strong> accept any wage offer this episode and earned <strong>{{ player.earnings_before_sharing }} </strong>.</p>
+        <p>You did <strong>not</strong> accept any wage offer this search and earned <strong>{{ player.earnings_before_sharing }} </strong>.</p>
      {% else %}
-        <p>You did <strong>not</strong> accept any wage offer this episode and earned <strong> {{ C.ENDOWMENT }} ECUs </strong>.</p>
+        <p>You did <strong>not</strong> accept any wage offer this search and earned <strong> {{ C.ENDOWMENT }} ECUs </strong>.</p>
     {% endif %}
 {% endif %}
 
     {% if Treatment == "T" %}
-        <!-- <p>The person you are paired with set a Reservation Wage of <strong> {{ partner_reservation_wage }} ECUs</strong> </p>-->
         <p>The person you are paired with earned <strong> {{ partner_earnings_before_sharing }} </strong> </p>
-        <p>If this search episode is selected for payment, you and the person you are paired with will each receive
-            <strong>({{ player.earnings_before_sharing }} + {{ partner_earnings_before_sharing }} ) / 2 = {{ player.earnings }} </strong></p>
+        <p>If this job search is selected for payment, you and the person you are paired with will each receive
+            <strong>{{ player.earnings_before_sharing }} /2  + {{ partner_earnings_before_sharing }} / 2  = {{ player.earnings }} </strong></p>
     {% else %}
     {% endif %}
 

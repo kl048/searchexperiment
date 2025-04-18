@@ -73,7 +73,7 @@ class Player(BasePlayer):
         correct_count = sum(1 for quiz, answer in solutions.items() if getattr(self, quiz) == answer)
 
         #  Treat correct answers as ECUs
-        crt_earnings_ecu = correct_count * 0.8
+        crt_earnings_ecu = correct_count
 
         self.participant.vars['crt_earnings'] = crt_earnings_ecu
         self.payoff += crt_earnings_ecu
@@ -81,7 +81,7 @@ class Player(BasePlayer):
         print(f"DEBUG: In CRT, calculated crt_earnings (ECU) = {crt_earnings_ecu}")
 
 
-class CRT(Page):
+class crt(Page):
     form_model = 'player'
     form_fields = ['quiz1', 'quiz2', 'quiz3', 'quiz4', 'quiz5', 'quiz6', 'quiz7', 'quiz8', 'quiz9', 'quiz10']
 
@@ -134,4 +134,4 @@ class Next(Page):
         return player.failed_too_many
 
 
-page_sequence = [CRT, Next]
+page_sequence = [crt, Next]

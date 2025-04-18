@@ -1,0 +1,41 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block timer %}
+<script>
+    let timer = {{ duration }};
+    let countdownElement = null;
+
+    function updateTimer() {
+        if (!countdownElement) {
+            countdownElement = document.getElementById('countdown');
+        }
+
+        let minutes = Math.floor(timer / 60);
+        let seconds = timer % 60;
+        countdownElement.textContent =
+            minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+
+        if (timer > 0) {
+            timer--;
+            setTimeout(updateTimer, 1000);
+        } else {
+            document.getElementById("next-button-container").style.display = "block";
+        }
+    }
+
+    window.onload = updateTimer;
+</script>
+{% endblock %}
+
+{% block content %}
+<h3>Please take some time to consider the reservation wage you want to set.</h3>
+
+<p style="margin-top: 10px;">
+    You can continue in: <span id="countdown">--:--</span>
+</p>
+
+<div id="next-button-container" style="display: none; margin-top: 30px;">
+    {{ next_button }}
+</div>
+{% endblock %}

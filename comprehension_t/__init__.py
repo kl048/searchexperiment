@@ -9,16 +9,15 @@ class C(BaseConstants):
     ECU_LABEL = 'ECUs'
     NUM_ROUNDS = 1
 
-    QUIZ_FIELDS = [f'quiz_{n}' for n in range(1, 11)]
+    QUIZ_FIELDS = [f'quiz_{n}' for n in range(1, 11) if n != 8]
     QUIZ_LABELS = [
-        "Each search episode will last 20 periods.",
+        "Each job search will last 20 periods.",
         "A wage offer will be made every period.",
-        "You will be paid for one randomly selected search episode.",
+        "You will be paid for one randomly selected job search.",
         "If you receive a wage offer that is above the lowest wage you state, then your wage will equal the lowest amount you stated.",
         'You will have the same partner throughout the study who you can chat with.',
         'You will not share your earnings with your partner',
         "The length of a job search is:",
-        "If a period begins and you have not already accepted a wage offer, there is:",
         "At the end of the study you will be paid for:",
         "If you receive a wage offer that is above the reservation wage you set, then your wage will equal:",
     ]
@@ -59,14 +58,12 @@ class Player(BasePlayer):
 
     # Multiple Choice Questions (Radio Select)
     quiz_7 = models.StringField(
-        choices=[("a", "Exactly 20 periods."), ("b", "Uncertain."), ("c", "There is always a 95% chance a job search will continue for another period.")],
+        choices=[("a", "Exactly 20 periods."), ("b", "Uncertain. There is always a 90% chance a job search will continue for another period"),
+                 ("c", " Uncertain. There is always a 50% chance a job search will continue for another period.")],
         widget=widgets.RadioSelect)
     quiz_7_wrong_attempts = models.IntegerField(initial=0)  #  Always set to 0
 
-    quiz_8 = models.StringField(
-        choices=[("a", "A 25% chance a wage offer will be made."), ("b", "A 50% chance a wage offer will be made."), ("c", "A 100% chance a wage offer will be made.")],
-        widget=widgets.RadioSelect)
-    quiz_8_wrong_attempts = models.IntegerField(initial=0)  # Always set to 0
+    # quiz_8 removed
 
     quiz_9 = models.StringField(
         choices=[("a", "The one job search you will complete."), ("b", "One of the twenty job searches you will complete selected at random."),
@@ -104,15 +101,15 @@ class Comprehension(Page):
     @staticmethod
     def error_message(player: Player, values):
         solutions = dict(
-            quiz_1=(False, "Each search episode does not  last exactly 20 periods."),
-            quiz_2=(False, "There is a 50% chance that there will be a wage offered in each period"),
-            quiz_3=(True, "You will be paid based on one randomly selected search episode."),
+            quiz_1=(False, "The number of periods in a job search is uncertain ."),
+            quiz_2=(True, "Yes, a wage offer will be made every period."),
+            quiz_3=(True, "You will be paid based on one randomly selected job search."),
             quiz_4=(False, "If you receive a wage offer that is above your stated lowest acceptable wage, your wage will equal the wage offer."),
             quiz_5=(True, "You will have the same partner throughout the study who you can chat with."),
             quiz_6=(False, "You will share your earnings with your partner."),
-            quiz_7=("b", "The number of periods in a search episode is uncertain."),
-            quiz_8=("b", "There is a 50% chance that a wage offer will be made in any period."),
-            quiz_9=("b", "Only one of the 20 search episodes will be selected randomly to determine your payment."),
+            quiz_7=("b", "The number of periods in a job search is uncertain. There is always a 90% chance a job search will continue for another period. "),
+            # quiz_8 removed
+            quiz_9=("b", "Only one of the 20 job search will be selected randomly to determine your payment."),
             quiz_10=("c", "Your wage will equal the wage offer if the offer is at least as large as the lowest wage you stated."),
         )
 
@@ -139,7 +136,36 @@ class EndComprehension(Page):
 class Instructions(Page):
     pass
 
+class VideoIntro(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+class Video1(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+class Video2(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+class Video3(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+class Video4(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+class Video56(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+class Video78(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+
 
 page_sequence = [
-    Instructions, Comprehension, EndComprehension
+    Instructions, VideoIntro, Video1, Video2, Video3, Video4, Video56, Video78, Comprehension, EndComprehension
 ]

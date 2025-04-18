@@ -2,8 +2,6 @@ from otree.api import *
 import random
 
 doc = """
-Payment application: Randomly selects an episode for payment.
-Ensures the same episode is selected for both players in Team (T) treatment.
 """
 
 class C(BaseConstants):

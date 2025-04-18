@@ -2,21 +2,42 @@ import json
 from otree.api import *
 
 doc = """
-Your app description
+
 """
 
 class C(BaseConstants):
     NAME_IN_URL = 'Main_game_2'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 20
-    ENDOWMENT = 20
-    ALPHA = 0.5
+    ENDOWMENT = 10
     THETA = 100
-    PERIODS = {1: 5, 2: 7, 3: 5, 4:4, 5:6, 6:3, 7:5, 8:4, 9:6, 10:2, 11:4, 12:3, 13:6, 14:7, 15:4, 16:5, 17:3, 18:8, 19:6, 20:6}
     CHAT_LONG = 60
     CHAT_SHORT = 30
     NUM_CHAT_LONG = 5
-    EXCHANGE_RATE = 0.25
+    EXCHANGE_RATE = 0.20
+    PERIODS = {
+        1: (10, 5),
+        2: (8, 8),
+        3: (3, 2),
+        4: (3, 4),
+        5: (1, 22),
+        6: (32, 18),
+        7: (3, 4),
+        8: (9, 8),
+        9: (35, 4),
+        10: (4, 11),
+        11: (8, 50),
+        12: (13, 22),
+        13: (23, 3),
+        14: (9, 3),
+        15: (7, 1),
+        16: (5, 38),
+        17: (11, 21),
+        18: (5, 6),
+        19: (16, 3),
+        20: (2, 8),
+    }
+
 
 class Subsession(BaseSubsession):
     pass
@@ -53,14 +74,16 @@ class Player(BasePlayer):
 
 # Function to set max period for each round
 def set_Max_period(player: Player):
-    player.max_period_in_episode = C.PERIODS[player.round_number]
+    i = player.id_in_group  # 1 or 2
+    player.max_period_in_episode = C.PERIODS[player.round_number][i - 1]
+
 
 # Function to set earnings for Individual and Chat treatment
-#def set_earnings_I_C(player: Player):
-#    if player.accepted == True:
-#        player.earnings = player.wage_offer
-#    else:
-#        player.earnings = C.ENDOWMENT
+def set_earnings_I_C(player: Player):
+    if player.accepted == True:
+        player.earnings = player.wage_offer
+    else:
+        player.earnings = C.ENDOWMENT
 
 # Function to set earnings for Team treatment
 def set_earnings_T(group: Group):
@@ -85,7 +108,6 @@ class WaitForPartner_begin(WaitPage):
     @staticmethod
     def is_displayed(player: Player):
         return player.session.config['treatment'] in ['C', 'T']
-
 
 class Chat(Page):
     timer_text = 'Time left for chatting:'

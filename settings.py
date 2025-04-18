@@ -13,7 +13,7 @@ SESSION_CONFIGS = [
         num_demo_participants=1,
         app_sequence=['comprehension_i', 'Main_Ind', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='I',
-        real_world_currency_per_point = 0.25 # 1 ECUS = 0.25 dollars
+        real_world_currency_per_point = 0.20 # 1 ECUS = 0.25 dollars
     ),
     dict(
         name='Chat',
@@ -21,7 +21,7 @@ SESSION_CONFIGS = [
         num_demo_participants=2,
         app_sequence=['comprehension_c', 'Main', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='C',
-        real_world_currency_per_point =0.25
+        real_world_currency_per_point =0.20
     ),
     dict(
         name='Team',
@@ -29,17 +29,11 @@ SESSION_CONFIGS = [
         num_demo_participants=2,
         app_sequence=['comprehension_t', 'Main', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='T',
-        real_world_currency_per_point =0.25
+        real_world_currency_per_point =0.20
     ),
 ]
 
 ROOMS = [
-    dict(
-        name='Individual',
-        display_name='Individual',
-        participant_label_file='_rooms/workstation.txt',
-    ),
-
     dict(
         name='Chat_1',
         display_name='Chat_1',
@@ -132,7 +126,7 @@ CSRF_ENABLED = True
 
 
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = '123'
+ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """ """
 

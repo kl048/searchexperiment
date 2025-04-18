@@ -1,9 +1,8 @@
 {% block content %}
-<h3>Search Episode {{ player.round_number }} - Period <span id="period">1</span></h3>
+<h3>Job Search {{ player.round_number }} - Period <span id="period">1</span></h3>
 <p>Wage offer: <span id="wage">-</span></p>
 <p>Offer accepted: <span id="accepted">-</span></p>
 
-<!-- Table to display history -->
 <div class="table-container">
     <table id="history-table">
         <thead>
@@ -15,7 +14,6 @@
         </tr>
         </thead>
         <tbody id="history-table-body">
-        <!-- Data populated here -->
         </tbody>
     </table>
 </div>
@@ -28,12 +26,51 @@
     <input type="hidden" name="continue_history" value="" id="continue-history-field">
 
     <button type="button" id="next-period" style="margin-top: 10px;">Next Period</button>
-    <p id="message" style="color: green; display: none;">Go to the next Episode.</p>
-    <button type="submit" id="next-episode" style="margin-top: 10px; display: none;">Next Episode</button>
+    <p id="message" style="color: green; display: none;">See the results from this search in the next page.</p>
+    <button type="submit" id="next-episode" style="margin-top: 10px; display: none;">Next</button>
 </form>
 
 <script>
-    const alpha = parseFloat("{{ C.ALPHA }}");
+    function delayNextButton() {
+        const nextButton = document.getElementById('next-episode');
+        nextButton.disabled = true;
+        let secondsLeft = 5;
+        const originalText = nextButton.textContent;
+
+        nextButton.textContent = `Please wait ${secondsLeft} seconds...`;
+
+        const interval = setInterval(() => {
+            secondsLeft--;
+            if (secondsLeft > 0) {
+                nextButton.textContent = `Please wait ${secondsLeft} seconds...`;
+            } else {
+                clearInterval(interval);
+                nextButton.disabled = false;
+                nextButton.textContent = originalText;
+            }
+        }, 1000);
+    }
+
+    function delayNextPeriodButton() {
+        const periodButton = document.getElementById('next-period');
+        periodButton.disabled = true;
+        let secondsLeft = 5;
+        const originalText = "Next Period";
+
+        periodButton.textContent = `Wait ${secondsLeft}s...`;
+
+        const interval = setInterval(() => {
+            secondsLeft--;
+            if (secondsLeft > 0) {
+                periodButton.textContent = `Wait ${secondsLeft}s...`;
+            } else {
+                clearInterval(interval);
+                periodButton.disabled = false;
+                periodButton.textContent = originalText;
+            }
+        }, 1000);
+    }
+
     const theta = parseInt("{{ C.THETA }}", 10);
     const reservationWage = parseInt("{{ player.reservation_wage }}", 10);
     const maxPeriodInEpisode = parseInt("{{ player.max_period_in_episode }}", 10);
@@ -46,32 +83,35 @@
     document.getElementById('period').textContent = period;
 
     function determineWageOffer() {
-        const randomNumber = Math.random();
-        let wageOffer, decision, continueStatus;
+        const wageOffer = Math.floor(Math.random() * theta) + 1;
+        let decisionText, continueText;
+        let accepted;
 
-        if (randomNumber <= alpha) {
-            wageOffer = Math.floor(Math.random() * theta) + 1;
-            decision = wageOffer >= reservationWage ? "Accept" : "Reject";
+        if (wageOffer >= reservationWage) {
+            accepted = true;
+            decisionText = `Accept — because the offer of ${wageOffer} met or exceeded your reservation wage of ${reservationWage}.`;
+            continueText = "No ";
         } else {
-            wageOffer = "No offer";
-            decision = "-";
+            accepted = false;
+            decisionText = `Reject — because your reservation wage is ${reservationWage} and the offer was ${wageOffer}.`;
+            continueText = (period >= maxPeriodInEpisode)
+                ? "No "
+                : "Yes ";
         }
 
-        continueStatus = (decision === "Accept" || period >= maxPeriodInEpisode) ? "No" : "Yes";
-
-        // Explicitly update page text AFTER decision is final
         document.getElementById('wage').textContent = wageOffer;
-        document.getElementById('accepted').textContent = decision === "Accept" ? "Yes" : "No";
+        document.getElementById('accepted').textContent = accepted ? "Yes" : "No";
 
-        // Push correct data explicitly into arrays here (clearly fixed!)
         wageOfferHistory.push({period: period, wageOffer: wageOffer});
-        decisionHistory.push(decision);
-        continueHistory.push(continueStatus);
+        decisionHistory.push(decisionText);
+        continueHistory.push(continueText);
 
         updateHistoryTable();
 
-        if (continueStatus === "No") {
+        if (accepted || period >= maxPeriodInEpisode) {
             endEpisode();
+        } else {
+            delayNextPeriodButton();
         }
     }
 
@@ -93,13 +133,17 @@
         document.getElementById('next-episode').style.display = 'block';
         document.getElementById('next-period').style.display = 'none';
 
-        document.getElementById('wage-offer-field').value = wageOfferHistory[wageOfferHistory.length - 1].wageOffer === "No offer" ? "" : wageOfferHistory[wageOfferHistory.length - 1].wageOffer;
-        document.getElementById('accepted-field').value = decisionHistory[decisionHistory.length - 1] === "Accept";
+        const lastOffer = wageOfferHistory[wageOfferHistory.length - 1].wageOffer;
+        const lastDecision = decisionHistory[decisionHistory.length - 1];
 
-        // Explicitly push ENTIRE histories
+        document.getElementById('wage-offer-field').value = lastOffer;
+        document.getElementById('accepted-field').value = lastDecision.startsWith("Accept");
+
         document.getElementById('wage-offer-history-field').value = JSON.stringify(wageOfferHistory);
         document.getElementById('decision-history-field').value = JSON.stringify(decisionHistory);
         document.getElementById('continue-history-field').value = JSON.stringify(continueHistory);
+
+        delayNextButton();
     }
 
     determineWageOffer();
@@ -109,7 +153,6 @@
         document.getElementById('period').textContent = period;
         determineWageOffer();
     });
-
 </script>
 
 <style>

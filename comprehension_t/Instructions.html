@@ -1,9 +1,16 @@
 {{block content}}
+<hr>
+<p> <b>Please click to listen to the instructions. </b> </p>
+<audio controls>
+    <source src="/static/Team Instructions.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
 <div class="instructions" style="">
     <hr>
-        <p>
-            <b>Instructions</b>
-        </p>
+    <p>
+        <b>Instructions</b>
+    </p>
     This is a study on economic decision making.
     The instructions are simple, and if you follow them carefully, you may earn a
     <b>CONSIDERABLE AMOUNT OF MONEY</b>
@@ -12,81 +19,112 @@
 
     </p>
     <p>
-        This experiment consists of twenty search episodes.
+        You are in the role of someone who is searching for a wage and will receive a series of wage offers and have to
+        decide which one if any you will accept. That process is called a search and it will be described in detail in a
+        moment. This experiment consists of twenty searches and after all twenty searches are complete, one will be
+        chosen at random to determine your payment.
+        Wages are denoted in <b> Experimental Currency Units (ECUs) with 5 ECU = $1. </b>
+
     </p>
     <p>
     <hr>
-        <p>
-            <b><U>Search Episodes</U></b>
-        </p>
-    Each episode will consist of several periods.  At the end of a period, there is a 95% chance that there will be another period and a 5% chance that the search episode will end.
-    Therefore, you do not know how many periods will be in a search episode, but in any period you can expect there to be about 20 more periods.
+    <p>
+        <b>Searches</b>
+    </p>
+    Each search will consist of an unknown number of periods. At the end of a period, there is a 90% chance that there
+    will be another period and a 10% chance that the search will end.
+    Therefore, you do not know how many periods will be in a search, but in any period you can expect there to be about
+    10 more periods.
     <p>
     </p>
-        <p>
-        You will begin each search episode not having a wage. During each period, there is a 50% chance that you could receive a wage offer.  If an offer is received,
-            it will be an integer between 1 and 100 (including 1 and 100)  , where all integers are equally likely to be the wage offer you receive.
-            This means that if you receive an offer, there is a 1/100 = 1% chance it is 1, a 1/100 = 1% chance it is 2, a 1/100 = 1% chance it will be 3, and so on.
-            Wages are denoted in <b>Experimental Currency Units (ECUs).</b>
-        </p>
     <p>
-
-        At the beginning of a search episode, you will be asked to state the lowest  wage offer that you are willing to accept.
-        In each period, if you have not already accepted a wage,
-        <u>the computer will automatically accept any wage offer greater than or equal to the lowest acceptable offer that you stated. </u>
-        This accepted wage offer will be your wage for the search episode.  Please think carefully about your lowest wage offer because it will affect your payoff and
-        you will not be able to change your answer during a search episode. If a wage offer is not received in a period or the offer received is lower than the lowest wage offer that you stated
-        at the start of the search episode,
-        then you will not accept a wage and you will move on to the next period if the search episode continues.
-
-    </p>
-
-    <p>
-        If a wage offer has been accepted before the search episode ends, you will earn that amount for the search episode and you will no longer receive wage offers.
-        If the search episode ends and you have not accepted an offer, you will earn 20 ECUs for that search episode.
+        You will begin each search not having a wage. During each period of a search, you will receive a wage offer,
+        which will be an integer between 1 and 100 (including 1 and 100),
+        where all integers are equally likely to be the wage offer you receive.
+        This means that there is a 1/100 = 1% chance it is 1, a 1/100 = 1% chance it is 2, a 1/100 = 1% chance it will
+        be 3, and so on.
     </p>
     <p>
-
+        At the beginning of a job search, you will be asked to state the lowest wage offer that you are willing to
+        accept.
+        This is your reservation wage. In each period, the computer will compare the wage offer to your reservation
+        wage:
     </p>
+    <ul>
+        <li>If the wage offer is equal to or more than your reservation wage, then the computer will automatically
+            accept the offer for you.
+            This will end the search and your earnings for the search will equal the wage offer you accepted.
+        </li>
+        <li>If the wage offer is less than your reservation wage, the computer will automatically reject the offer for
+            you.
+            The computer will then determine if the search continues to the next period.
+            <ul>
+                <li>If the search continues to the next period, then the process repeats itself.</li>
+                <li>
+                    If the search does not continue, then the search ends and your earnings for the search will be 10.
+                </li>
+            </ul>
+
+        </li>
+    </ul>
+
+
     <p>
-        As reminder, you will go through 20 search episodes.
-        The wage offers made in a search episode and the number of periods in a search episode are independent of what happens in the other search episodes.
+        Please think carefully about your reservation wage because it will affect your payoff and you will not be able
+        to change it during a search although you can set different reservation wages for different searches.
     </p>
     <p>
         {% if session.config.treatment == 'T' or session.config.treatment == 'C' %}
     <hr>
-       <b><u>Chats</u></b>
+    <p><b>Chatting</b></p>
+
     <p>
-        At the beginning of the session, you will be paired with another participant, and you will be able to use a chat box in order to chat with each other before the beginning of
-        each search episode about your approaches to the search environment. The person with whom you are paired <b>WILL REMAIN THE SAME FOR THE ENTIRE SESSION.</b>
-        None of the other participants in the lab will be able to see the messages you and the person you are matched with send to each other.
-        For the first five search episodes, you will have 60 seconds to chat. Beginning with search episode 6, you will have 30 seconds to chat.
-        There are only two restrictions on messages: you may not post messages which identify yourself (e.g., age, gender, location etc.), and you may not use offensive language.
-        {% endif %}
+        You have been paired with another participant and will stay paired with that person for the entire experiment.
+        The two of you can use a chat box in order to chat with each other before the beginning of each search.
+        You can chat about anything that you want, including advice about what reservation wage to set, except that you
+        cannot post messages which identify yourself (such as age, gender, location in the room, etc.) and you cannot
+        use offensive language.
     </p>
+    <p>
+        None of the other participants in the lab will be able to see the messages you and the person you are matched
+        with send to each other.
+        For the first five searches, you will have 60 seconds to chat. Beginning with the sixth search, you will
+        have 30 seconds to chat.
+    </p>
+    {% endif %}
 
     <p>
         {% if session.config.treatment == 'T'%}
-            You and the person you have been paired with will equally share your earnings with each other.
-            At the end of the search episode, your earnings for the episode will be added to the earnings of the other person and you will each receive half of that total.
-        {% endif %}
+    <hr>
+    <p><b>Payment Sharing</b></p>
+    <p>
+        You and the person you can chat with will equally share your earnings with each other.
+        At the end of the search, you will receive half of your earnings plus half of their earnings. Similarly,
+        they will receive half of your earnings and half of their own earnings.
+    </p>
+    {% endif %}
+
+    <hr>
+    <p><b>Questions</b></p>
+    <p>
+
+        If you have a question, please raise you hand. If not, click next to see some examples of how a search works.
+        After that, you will answer some comprehension questions to make sure you understand how the experiment works
+        before you begin searching.
+
     </p>
 
-        <hr>
-       <b>Feedback:</b>
-    <p>
-        After all 20 search episodes you will complete a questionnaire, parts of which you will be paid for.
-        The questionnaire and how much you will paid for it do not depend in any way on what happens in the search episodes.
-    </p>
-
-    <p>
-        At the end of today’s session you will receive your earnings from one randomly selected search episode plus your earnings from part of the questionnaire.
-        The exchange rate between dollars and ECUs is 1 ECU = 25 cents.  In addition, you will receive the $5 you were guaranteed for registering to be in this study.
-    </p>
-    <p>
-        Are there any questions?
-    </p>
 </div>
-{{next_button}}
+<div id="next-button-container" style="display: none; margin-top: 30px;">
+    {{ next_button }}
+</div>
+
+<script>
+    // Wait 210 seconds
+    setTimeout(function () {
+        document.getElementById("next-button-container").style.display = "block";
+    }, 210000);
+</script>
+
 
 {{endblock}}

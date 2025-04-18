@@ -1,0 +1,60 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+
+<video width="800" height="450" controls autoplay>
+    <source src="/static/56.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<div id="next-container" style="margin-top: 20px; display: none;">
+    <p>Video complete. Click below to continue.</p>
+    {% next_button %}
+</div>
+
+<script>
+    const video = document.querySelector('video');
+    const nextContainer = document.getElementById('next-container');
+
+    let lastTime = 0;
+    let hasFinishedOnce = false;
+
+    const timeUpdateHandler = function () {
+        if (!hasFinishedOnce) {
+            if (video.currentTime > lastTime + 0.3) {
+                video.currentTime = lastTime;
+            } else {
+                lastTime = video.currentTime;
+            }
+        }
+    };
+
+    const seekingHandler = function () {
+        if (!hasFinishedOnce && video.currentTime > lastTime) {
+            video.currentTime = lastTime;
+        }
+    };
+
+    video.addEventListener('timeupdate', timeUpdateHandler);
+    video.addEventListener('seeking', seekingHandler);
+
+    video.onended = function () {
+        hasFinishedOnce = true;
+        nextContainer.style.display = 'block';
+
+        // Remove seeking restrictions
+        video.removeEventListener('timeupdate', timeUpdateHandler);
+        video.removeEventListener('seeking', seekingHandler);
+    };
+
+    video.onplay = function () {
+        if (!hasFinishedOnce) {
+            nextContainer.style.display = 'none';
+            lastTime = 0;
+        }
+    };
+</script>
+
+
+{% endblock %}
