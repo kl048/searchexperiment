@@ -13,7 +13,7 @@ SESSION_CONFIGS = [
         num_demo_participants=1,
         app_sequence=['comprehension_i', 'Main_Ind', 'Payment', 'crt', 'survey', 'Measures'],
         treatment='I',
-        real_world_currency_per_point = 0.20 # 1 ECUS = 0.25 dollars
+        real_world_currency_per_point = 0.20
     ),
     dict(
         name='Chat',

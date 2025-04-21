@@ -2,54 +2,31 @@
 {% load otree %}
 
 {% block content %}
+<div id="player"></div>
 
-<video id="videoIntro" width="800" height="450" controls autoplay>
-    <source src="/static/Intro.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-
-<div id="next-container" style="margin-top: 20px; display: none;">
-    <p>Video complete. Click below to continue.</p>
+<div id="next-button" style="display: none; margin-top: 20px;">
     {% next_button %}
 </div>
+{% endblock %}
 
+{% block script %}
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    const video = document.querySelector('video');
-    const nextContainer = document.getElementById('next-container');
-
-    // Disable seeking
-    let lastTime = 0;
-    let seekingBlocked = true;
-
-    video.addEventListener('timeupdate', function () {
-        if (seekingBlocked && video.currentTime > lastTime + 0.3) {
-            video.currentTime = lastTime;
-        } else {
-            lastTime = video.currentTime;
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '450',
+            width: '800',
+            videoId: 'FOs_gKLQ9aA',
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+            document.getElementById('next-button').style.display = 'block';
         }
-    });
-
-    video.addEventListener('seeking', function () {
-        if (seekingBlocked && video.currentTime > lastTime) {
-            video.currentTime = lastTime;
-        }
-    });
-
-    // Show next button when video ends
-    video.onended = function () {
-        seekingBlocked = false; // Allow seeking after full watch
-        nextContainer.style.display = 'block';
-    };
-
-    // Reset state when video restarts
-    video.onplay = function () {
-        if (video.currentTime < video.duration) {
-            // Hide button if video is replayed
-            nextContainer.style.display = 'none';
-            seekingBlocked = true;
-            lastTime = 0;
-        }
-    };
+    }
 </script>
-
 {% endblock %}
