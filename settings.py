@@ -35,6 +35,11 @@ SESSION_CONFIGS = [
 
 ROOMS = [
     dict(
+        name='Individual',
+        display_name='Individual',
+        participant_label_file='_rooms/workstation.txt',
+    ),
+    dict(
         name='Chat_1',
         display_name='Chat_1',
         participant_label_file='_rooms/workstation.txt',
@@ -126,7 +131,8 @@ CSRF_ENABLED = True
 
 
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+# for security, best to set admin password in an environment variable
+ADMIN_PASSWORD = '123'
 
 DEMO_PAGE_INTRO_HTML = """ """
 
